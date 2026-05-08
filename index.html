@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>蛙仔盲盒日記 - 朋友分享版</title>
+    <style>
+        :root {
+            --bg-color: #f2f0eb; --card-bg: #ffffff; --accent: #7a6f66; 
+            --text-dark: #4a4a4a; --text-light: #9e9e9e; --line-color: #e8e6e1;
+            --pill-bg: #ebe8e2; --pill-text: #8c837a;
+            --addon-bg: #fdf2f2; --addon-text: #e59a9a;
+        }
+        body { background-color: var(--bg-color); color: var(--text-dark); font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 700px; background-color: var(--card-bg); border-radius: 25px; padding: 25px 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        header h1 { text-align: center; font-weight: 300; letter-spacing: 10px; font-size: 1.5rem; color: var(--accent); margin: 10px 0 25px 0; }
+        
+        .summary-box { background-color: #faf9f7; border-radius: 15px; padding: 15px 0; display: flex; justify-content: space-around; margin-bottom: 20px; border: 1px solid var(--line-color); }
+        .summary-item { text-align: center; flex: 1; border-right: 1px solid var(--line-color); }
+        .summary-item:last-child { border-right: none; }
+        .summary-item span { display: block; font-size: 0.7rem; color: var(--text-light); margin-bottom: 4px; }
+        .summary-item b { font-size: 1rem; color: var(--accent); }
+
+        .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 10px; }
+        .grid-system { 
+            display: grid; 
+            grid-template-columns: 75px 1fr 1fr 1fr 1fr 1fr 90px; 
+            align-items: center; 
+            text-align: center;
+            min-width: 580px; 
+        }
+
+        .list-header { background: #f7f5f2; border-radius: 8px; padding: 12px 0; margin-bottom: 10px; }
+        .list-header span { font-size: 0.75rem; color: var(--text-light); font-weight: bold; }
+
+        .list-item { padding: 15px 0; border-bottom: 1px solid #f9f9f9; }
+        .col { font-size: 0.85rem; display: flex; align-items: center; justify-content: center; min-height: 35px; }
+        
+        .pills { display: inline-block; font-size: 0.65rem; background-color: var(--pill-bg); color: var(--pill-text); padding: 3px 10px; border-radius: 50px; line-height: 1.2; white-space: nowrap; }
+        .addon-pill { background-color: var(--addon-bg); color: var(--addon-text); font-weight: bold; }
+        
+        .price-text { color: var(--accent); font-weight: 600; }
+        .year-title { font-size: 0.9rem; font-weight: 500; color: var(--accent); padding: 12px 15px; background: #faf9f7; border-radius: 10px; border: 1px solid var(--line-color); margin: 15px 0 10px 0; display: block; text-align: left; }
+        .footer { text-align: center; margin-top: 30px; padding: 20px; font-size: 0.7rem; color: var(--text-light); letter-spacing: 5px; opacity: 0.4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header><h1>蛙 仔 盲 盒 日 記</h1></header>
+    
+    <div class="summary-box">
+        <div class="summary-item"><span>人數</span><b>23</b></div>
+        <div class="summary-item"><span>加值</span><b>2</b></div>
+        <div class="summary-item"><span>總計</span><b>109,200</b></div>
+    </div>
+
+    <div class="table-container">
+        <div class="grid-system list-header">
+            <span>日期</span><span>名字</span><span>國籍</span><span>方案</span><span>加值</span><span>小費</span><span>金額</span>
+        </div>
+
+        <span class="year-title">2026 年度紀錄</span>
+        <div class="grid-system list-item"><div class="col">05/03</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">10,500</div></div>
+        <div class="grid-system list-item"><div class="col">05/01</div><div class="col"><b>米露</b></div><div class="col">台灣</div><div class="col">-</div><div class="col"><span class="pills addon-pill">口爆</span></div><div class="col">-</div><div class="col price-text">3,500</div></div>
+        <div class="grid-system list-item"><div class="col">04/18</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">7,000</div></div>
+        <div class="grid-system list-item"><div class="col">04/08</div><div class="col"><b>小光</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
+        <div class="grid-system list-item"><div class="col">03/22</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">7,500</div></div>
+        <div class="grid-system list-item"><div class="col">03/10</div><div class="col"><b>芊卉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
+        <div class="grid-system list-item"><div class="col">03/06</div><div class="col"><b>甘蓓</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">6,000</div></div>
+        <div class="grid-system list-item"><div class="col">03/01</div><div class="col"><b>綺綺</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,800</div></div>
+        <div class="grid-system list-item"><div class="col">02/24</div><div class="col"><b>幼寧</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,000</div></div>
+        <div class="grid-system list-item"><div class="col">02/08</div><div class="col"><b>蘇打</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
+        <div class="grid-system list-item"><div class="col">02/08</div><div class="col"><b>小賢</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">3,000</div></div>
+        <div class="grid-system list-item"><div class="col">01/31</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,000</div></div>
+        <div class="grid-system list-item"><div class="col">01/29</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
+        <div class="grid-system list-item"><div class="col">01/25</div><div class="col"><b>北茉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+        <div class="grid-system list-item"><div class="col">01/17</div><div class="col"><b>米莉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+        <div class="grid-system list-item"><div class="col">01/10</div><div class="col"><b>米莉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+        <div class="grid-system list-item"><div class="col">01/06</div><div class="col"><b>亮亮</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+        <div class="grid-system list-item"><div class="col">01/03</div><div class="col"><b>寶拉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">3,000</div></div>
+
+        <span class="year-title">2025 年度紀錄</span>
+        <div class="grid-system list-item"><div class="col">12/31</div><div class="col"><b>奈香</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+        <div class="grid-system list-item"><div class="col">12/28</div><div class="col"><b>花乃</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,800</div></div>
+        <div class="grid-system list-item"><div class="col">12/25</div><div class="col"><b>夏希</b></div><div class="
