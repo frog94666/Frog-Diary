@@ -12,7 +12,7 @@
             --addon-bg: #fdf2f2; --addon-text: #e59a9a;
         }
         body { background-color: var(--bg-color); color: var(--text-dark); font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 750px; background-color: var(--card-bg); border-radius: 25px; padding: 25px 10px 60px 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 50px; box-sizing: border-box; }
+        .container { width: 100%; max-width: 750px; background-color: var(--card-bg); border-radius: 25px; padding: 25px 10px 60px 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 50px; box-sizing: border-box; overflow: hidden; }
         header h1 { text-align: center; font-weight: 300; letter-spacing: 10px; font-size: 1.5rem; color: var(--accent); margin: 10px 0 25px 0; }
         
         .summary-box { background-color: #faf9f7; border-radius: 15px; padding: 15px 0; display: flex; justify-content: space-around; margin-bottom: 20px; border: 1px solid var(--line-color); }
@@ -21,10 +21,9 @@
         .summary-item span { display: block; font-size: 0.7rem; color: var(--text-light); margin-bottom: 4px; }
         .summary-item b { font-size: 1rem; color: var(--accent); }
 
-        /* 表格與滾動核心 */
+        /* 表格滾動核心 - 徹底解決長度不足問題 */
         .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        /* 確保內部寬度至少 600px，並允許自動撐開 */
-        .inner-wrapper { min-width: 600px; display: inline-block; width: 100%; }
+        .inner-wrapper { min-width: 650px; display: block; width: 100%; padding-bottom: 10px; }
 
         .grid-system { 
             display: grid; 
@@ -44,7 +43,7 @@
         .addon-pill { background-color: var(--addon-bg); color: var(--addon-text); font-weight: bold; }
         .price-text { color: var(--accent); font-weight: 600; }
 
-        /* 年度標題框 - 解決長度不足與文字顯示問題 */
+        /* 年度標題框 - 強化寬度鎖定 */
         .year-header { 
             background: #faf9f7; 
             border-radius: 10px; 
@@ -52,25 +51,16 @@
             margin: 15px 0 10px 0; 
             cursor: pointer;
             width: 100%; 
-            padding: 12px 0;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-sizing: border-box;
+            position: sticky;
+            left: 0; /* 讓標題文字在捲動時盡量留在畫面左側 */
         }
-        .year-title { 
-            padding-left: 20px;
-            font-size: 0.95rem; 
-            font-weight: 600; 
-            color: var(--accent);
-            white-space: nowrap;
-        }
-        .arrow { 
-            padding-right: 20px;
-            transition: transform 0.3s; 
-            font-size: 0.8rem; 
-            color: var(--text-light); 
-        }
+        .year-title { font-size: 0.95rem; font-weight: 600; color: var(--accent); }
+        .arrow { transition: transform 0.3s; font-size: 0.8rem; color: var(--text-light); }
         
         .hidden { display: none !important; }
         .collapsed .arrow { transform: rotate(-90deg); }
@@ -90,7 +80,6 @@
 
     <div class="table-container">
         <div class="inner-wrapper">
-            <!-- 標頭 -->
             <div class="grid-system list-header">
                 <span>日期</span><span>名字</span><span>國籍</span><span>方案</span><span>加值</span><span>小費</span><span>金額</span>
             </div>
@@ -101,6 +90,7 @@
                 <div class="arrow">▼</div>
             </div>
             <div id="y2026">
+                <!-- 數據保持不變 -->
                 <div class="grid-system list-item"><div class="col">05/03</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">10,500</div></div>
                 <div class="grid-system list-item"><div class="col">05/01</div><div class="col"><b>米露</b></div><div class="col">台灣</div><div class="col">-</div><div class="col"><span class="pills addon-pill">口爆</span></div><div class="col">-</div><div class="col price-text">3,500</div></div>
                 <div class="grid-system list-item"><div class="col">04/18</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">7,000</div></div>
