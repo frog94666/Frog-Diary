@@ -65,7 +65,7 @@ body{
 
     border-radius:24px;
 
-    padding:20px 14px;
+    padding:20px 10px;
 
     box-shadow:
         0 8px 30px rgba(0,0,0,0.03);
@@ -172,18 +172,18 @@ header h1{
 /* 固定欄位 */
 
 .c-date{
-    width:52px;
+    width:48px;
     flex-shrink:0;
 }
 
 .c-name{
-    width:64px;
+    width:58px;
     flex-shrink:0;
     font-weight:600;
 }
 
 .c-nat{
-    width:52px;
+    width:42px;
     flex-shrink:0;
 }
 
@@ -202,19 +202,19 @@ header h1{
 
 .c-amt{
 
-    width:88px;
+    width:72px;
 
     flex-shrink:0;
 
-    text-align:right;
+    text-align:right !important;
+
+    padding-right:8px;
 
     font-weight:700;
 
     color:var(--accent);
 
     white-space:nowrap;
-
-    padding-right:4px;
 }
 
 /* Header */
@@ -237,15 +237,6 @@ header h1{
     font-weight:bold;
 
     white-space:nowrap;
-}
-
-/* 讓金額標題與數字真正同軸 */
-
-.list-header .c-amt{
-
-    text-align:right;
-
-    padding-right:4px;
 }
 
 /* 年度區塊 */
@@ -383,7 +374,6 @@ header h1{
 
     .container{
         border-radius:18px;
-        padding:18px 12px;
     }
 
     .summary-item b{
@@ -394,20 +384,12 @@ header h1{
         font-size:0.68rem;
     }
 
-    .c-date{
-        width:50px;
-    }
-
     .c-name{
-        width:60px;
-    }
-
-    .c-nat{
-        width:48px;
+        width:54px;
     }
 
     .c-amt{
-        width:82px;
+        width:66px;
     }
 }
 
