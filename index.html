@@ -14,7 +14,7 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: var(--text-dark); font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
         
-        .container { width: 100%; max-width: 480px; background-color: var(--card-bg); border-radius: 24px; padding: 20px 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
+        .container { width: 100%; max-width: 480px; background-color: var(--card-bg); border-radius: 24px; padding: 20px 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
         header h1 { text-align: center; font-weight: 300; letter-spacing: 6px; font-size: 1.2rem; color: var(--accent); margin: 0 0 20px 0; }
         
         .summary-box { background-color: #faf9f7; border-radius: 16px; display: flex; margin-bottom: 20px; border: 1px solid var(--line-color); height: 80px; }
@@ -23,46 +23,43 @@
         .summary-item span { font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; }
         .summary-item b { font-size: 1.1rem; color: var(--accent); line-height: 1; }
 
-        /* --- 核心修正：使用 Grid 鎖死寬度 --- */
-        .grid-row { 
+        /* --- 核心對齊機制：嚴格像素鎖定 --- */
+        .record-row { 
             display: grid; 
-            /* 固定像素寬度，不論內容長短，格子大小絕對不變 */
-            grid-template-columns: 45px 65px 42px 35px 55px 45px 1fr; 
+            /* 嚴格分配寬度：日期45, 名字65, 國籍45, 方案35, 加值50, 小費40, 金額(剩下) */
+            grid-template-columns: 45px 65px 45px 35px 50px 40px 1fr; 
             align-items: center; 
             width: 100%;
-            text-align: center;
-            padding: 12px 0;
         }
 
-        .list-header { border-bottom: 1px solid var(--line-color); padding-bottom: 8px; }
-        .list-header span { font-size: 0.65rem; color: var(--text-light); font-weight: bold; }
+        .list-header { border-bottom: 1px solid var(--line-color); padding-bottom: 10px; margin-bottom: 5px; }
+        .list-header span { font-size: 0.65rem; color: var(--text-light); font-weight: bold; text-align: center; }
 
-        /* 金額與小費強制靠右對齊 */
-        .c-tip { text-align: right; color: var(--text-light); padding-right: 5px; }
-        .c-amt { text-align: right; font-weight: 700; color: var(--accent); padding-right: 5px; }
+        /* 關鍵：小費與金額標題及內容全部強制靠右 */
+        .align-right { text-align: right !important; padding-right: 2px; }
+        .align-center { text-align: center !important; }
+        .align-left { text-align: left !important; }
 
-        /* 年份摺疊與動畫 */
-        .year-section { margin-bottom: 10px; }
+        .list-item { border-bottom: 1px solid #fcfcfc; font-size: 0.75rem; padding: 12px 0; }
+        .c-date { font-size: 0.7rem; color: var(--text-light); }
+        .c-name { font-weight: 600; padding-left: 5px; }
+        .c-tip { color: var(--text-light); }
+        .c-amt { font-weight: 700; color: var(--accent); font-family: 'Courier New', Courier, monospace; } /* 使用等寬字體增加對齊感 */
+
+        /* 折疊機制 */
         .year-header { 
             background: #faf9f7; border-radius: 10px; border: 1px solid var(--line-color); 
-            margin: 8px 0; cursor: pointer; padding: 12px 15px;
+            margin: 10px 0; cursor: pointer; padding: 12px 15px;
             display: flex; justify-content: space-between; align-items: center;
         }
         .year-title { font-size: 0.85rem; font-weight: 600; color: var(--accent); }
-        .arrow { transition: transform 0.4s ease; font-size: 0.6rem; color: var(--text-light); }
-        
-        .content-container { 
-            max-height: 5000px; 
-            overflow: hidden; 
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
+        .arrow { transition: transform 0.3s ease; font-size: 0.6rem; color: var(--text-light); }
+        .content-container { max-height: 5000px; overflow: hidden; transition: max-height 0.4s ease-out; }
         .collapsed { max-height: 0 !important; }
         .rotate-arrow { transform: rotate(-90deg); }
 
-        .list-item { border-bottom: 1px solid #fcfcfc; font-size: 0.72rem; }
         .pills { display: inline-block; font-size: 0.55rem; background-color: var(--pill-bg); color: var(--pill-text); padding: 2px 4px; border-radius: 4px; }
         .addon-pill { background-color: var(--addon-bg); color: var(--addon-text); font-weight: bold; }
-
         .footer { text-align: center; margin-top: 30px; padding: 10px; font-size: 0.6rem; color: var(--text-light); letter-spacing: 3px; opacity: 0.5; }
     </style>
 </head>
@@ -77,48 +74,46 @@
         <div class="summary-item"><span>總計</span><b>109,200</b></div>
     </div>
 
-    <div class="grid-row list-header">
-        <span>日期</span><span>名字</span><span>國籍</span><span>方案</span><span>加值</span><span class="c-tip">小費</span><span class="c-amt">金額</span>
+    <div class="record-row list-header">
+        <span class="align-left">日期</span><span class="align-center">名字</span><span class="align-center">國籍</span><span class="align-center">方案</span><span class="align-center">加值</span><span class="align-right">小費</span><span class="align-right">金額</span>
     </div>
 
     <div class="year-section">
-        <div class="year-header" onclick="toggleYear('content2026', this)">
-            <div class="year-title">2026 年度紀錄</div>
-            <div class="arrow">▼</div>
+        <div class="year-header" onclick="toggleYear('c2026', this)">
+            <div class="year-title">2026 年度紀錄</div><div class="arrow">▼</div>
         </div>
-        <div id="content2026" class="content-container">
-            <div class="grid-row list-item"><div>05/03</div><div style="font-weight:600">孟娜</div><div>越南</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">10,500</div></div>
-            <div class="grid-row list-item"><div>05/01</div><div style="font-weight:600">米露</div><div>台灣</div><div>-</div><div><span class="pills addon-pill">口爆</span></div><div class="c-tip">-</div><div class="c-amt">3,500</div></div>
-            <div class="grid-row list-item"><div>04/18</div><div style="font-weight:600">孟娜</div><div>越南</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">7,000</div></div>
-            <div class="grid-row list-item"><div>04/08</div><div style="font-weight:600">小光</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,500</div></div>
-            <div class="grid-row list-item"><div>03/22</div><div style="font-weight:600">薇倩</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">7,500</div></div>
-            <div class="grid-row list-item"><div>03/10</div><div style="font-weight:600">芊卉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,500</div></div>
-            <div class="grid-row list-item"><div>03/06</div><div style="font-weight:600">甘蓓</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">6,000</div></div>
-            <div class="grid-row list-item"><div>03/01</div><div style="font-weight:600">綺綺</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,800</div></div>
-            <div class="grid-row list-item"><div>02/24</div><div style="font-weight:600">幼寧</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,000</div></div>
-            <div class="grid-row list-item"><div>02/08</div><div style="font-weight:600">蘇打</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,500</div></div>
-            <div class="grid-row list-item"><div>02/08</div><div style="font-weight:600">小賢</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">3,000</div></div>
-            <div class="grid-row list-item"><div>01/31</div><div style="font-weight:600">薇倩</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,000</div></div>
-            <div class="grid-row list-item"><div>01/29</div><div style="font-weight:600">薇倩</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,500</div></div>
-            <div class="grid-row list-item"><div>01/25</div><div style="font-weight:600">北茉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
-            <div class="grid-row list-item"><div>01/17</div><div style="font-weight:600">米莉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
-            <div class="grid-row list-item"><div>01/10</div><div style="font-weight:600">米莉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
-            <div class="grid-row list-item"><div>01/06</div><div style="font-weight:600">亮亮</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
-            <div class="grid-row list-item"><div>01/03</div><div style="font-weight:600">寶拉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">3,000</div></div>
+        <div id="c2026" class="content-container">
+            <div class="record-row list-item"><div class="c-date align-left">05/03</div><div class="c-name">孟娜</div><div class="align-center">越南</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">10,500</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">05/01</div><div class="c-name">米露</div><div class="align-center">台灣</div><div class="align-center">-</div><div class="align-center"><span class="pills addon-pill">口爆</span></div><div class="c-tip align-right">-</div><div class="c-amt align-right">3,500</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">04/18</div><div class="c-name">孟娜</div><div class="align-center">越南</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">7,000</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">04/08</div><div class="c-name">小光</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,500</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">03/22</div><div class="c-name">薇倩</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">7,500</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">03/10</div><div class="c-name">芊卉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,500</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">03/06</div><div class="c-name">甘蓓</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">6,000</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">03/01</div><div class="c-name">綺綺</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,800</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">02/24</div><div class="c-name">幼寧</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,000</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">02/08</div><div class="c-name">蘇打</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,500</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">02/08</div><div class="c-name">小賢</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">3,000</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">01/31</div><div class="c-name">薇倩</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,000</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">01/29</div><div class="c-name">薇倩</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,500</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">01/25</div><div class="c-name">北茉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">01/17</div><div class="c-name">米莉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">01/10</div><div class="c-name">米莉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">01/06</div><div class="c-name">亮亮</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">01/03</div><div class="c-name">寶拉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">3,000</div></div>
         </div>
     </div>
 
     <div class="year-section">
-        <div class="year-header" onclick="toggleYear('content2025', this)">
-            <div class="year-title">2025 年度紀錄</div>
-            <div class="arrow">▼</div>
+        <div class="year-header" onclick="toggleYear('c2025', this)">
+            <div class="year-title">2025 年度紀錄</div><div class="arrow">▼</div>
         </div>
-        <div id="content2025" class="content-container">
-            <div class="grid-row list-item"><div>12/31</div><div style="font-weight:600">奈香</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
-            <div class="grid-row list-item"><div>12/28</div><div style="font-weight:600">花乃</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,800</div></div>
-            <div class="grid-row list-item"><div>12/25</div><div style="font-weight:600">夏希</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
-            <div class="grid-row list-item"><div>12/08</div><div style="font-weight:600">軒墨</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">6,000</div></div>
-            <div class="grid-row list-item"><div>12/05</div><div style="font-weight:600">陽光</div><div>泰國</div><div>-</div><div><span class="pills addon-pill">2S</span></div><div class="c-tip">-</div><div class="c-amt">3,500</div></div>
+        <div id="c2025" class="content-container">
+            <div class="record-row list-item"><div class="c-date align-left">12/31</div><div class="c-name">奈香</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">12/28</div><div class="c-name">花乃</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,800</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">12/25</div><div class="c-name">夏希</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">12/08</div><div class="c-name">軒墨</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">6,000</div></div>
+            <div class="record-row list-item"><div class="c-date align-left">12/05</div><div class="c-name">陽光</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center"><span class="pills addon-pill">2S</span></div><div class="c-tip align-right">-</div><div class="c-amt align-right">3,500</div></div>
         </div>
     </div>
 
@@ -126,11 +121,11 @@
 </div>
 
 <script>
-    function toggleYear(contentId, headerElement) {
-        const content = document.getElementById(contentId);
-        const arrow = headerElement.querySelector('.arrow');
-        content.classList.toggle('collapsed');
-        arrow.classList.toggle('rotate-arrow');
+    function toggleYear(id, el) {
+        const c = document.getElementById(id);
+        const a = el.querySelector('.arrow');
+        c.classList.toggle('collapsed');
+        a.classList.toggle('rotate-arrow');
     }
 </script>
 
