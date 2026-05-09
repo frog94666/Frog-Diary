@@ -17,22 +17,31 @@
         .container { width: 100%; max-width: 480px; background-color: var(--card-bg); border-radius: 24px; padding: 24px 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); overflow: hidden; }
         header h1 { text-align: center; font-weight: 300; letter-spacing: 6px; font-size: 1.2rem; color: var(--accent); margin: 0 0 20px 0; }
         
-        /* 修正統計區垂直置中 */
-        .summary-box { background-color: #faf9f7; border-radius: 16px; padding: 12px 0; display: flex; margin-bottom: 20px; border: 1px solid var(--line-color); min-height: 80px; }
-        .summary-item { text-align: center; flex: 1; border-right: 1px solid var(--line-color); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        /* --- 核心修正 1：統計區垂直置中 --- */
+        .summary-box { background-color: #faf9f7; border-radius: 16px; display: flex; margin-bottom: 20px; border: 1px solid var(--line-color); height: 80px; align-items: stretch; }
+        .summary-item { 
+            flex: 1; border-right: 1px solid var(--line-color); 
+            display: flex; flex-direction: column; 
+            justify-content: center; /* 強制內容在垂直方向居中 */
+            align-items: center; 
+        }
         .summary-item:last-child { border-right: none; }
-        .summary-item span { display: block; font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; }
-        .summary-item b { font-size: 1.1rem; color: var(--accent); line-height: 1.2; }
+        .summary-item span { font-size: 0.65rem; color: var(--text-light); margin-bottom: 2px; }
+        .summary-item b { font-size: 1.1rem; color: var(--accent); display: block; }
 
-        /* 精確分配欄位寬度 - 解決擠迫問題 */
-        .flex-row { display: flex; align-items: center; text-align: center; padding: 12px 0; }
-        .c-date { width: 48px; flex-shrink: 0; } /* 稍微收窄 */
-        .c-name { width: 62px; flex-shrink: 0; font-weight: 600; }
-        .c-nat  { width: 42px; flex-shrink: 0; }
-        .c-plan { flex: 0.7; min-width: 25px; }
-        .c-add  { flex: 1.2; min-width: 45px; }
-        .c-tip  { flex: 1; min-width: 35px; } /* 增加小費權重讓它往後挪 */
-        .c-amt  { width: 85px; flex-shrink: 0; text-align: right; font-weight: 700; color: var(--accent); padding-right: 8px; } /* 增加右間距 */
+        /* --- 核心修正 2：欄位寬度重新分配 (解決小費擠迫) --- */
+        .flex-row { display: flex; align-items: center; text-align: center; padding: 12px 0; width: 100%; }
+        
+        /* 縮小前方固定欄位，將空間推向後方 */
+        .c-date { width: 12%; flex-shrink: 0; } 
+        .c-name { width: 15%; flex-shrink: 0; font-weight: 600; }
+        .c-nat  { width: 12%; flex-shrink: 0; }
+        .c-plan { width: 12%; flex-shrink: 0; }
+        .c-add  { width: 14%; flex-shrink: 0; }
+        
+        /* 加大小費寬度並向右對齊一些，拉開與金額的距離 */
+        .c-tip  { width: 15%; flex-shrink: 0; padding-left: 5px; } 
+        .c-amt  { width: 20%; flex-shrink: 0; text-align: right; font-weight: 700; color: var(--accent); padding-right: 5px; }
 
         .list-header { border-bottom: 1px solid var(--line-color); padding-bottom: 8px; margin-bottom: 4px; }
         .list-header span { font-size: 0.65rem; color: var(--text-light); font-weight: bold; }
@@ -44,11 +53,10 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .year-title { font-size: 0.85rem; font-weight: 600; color: var(--accent); }
-        .arrow { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.7rem; color: var(--text-light); }
+        .arrow { transition: transform 0.4s; font-size: 0.7rem; color: var(--text-light); }
         
-        .content-container { max-height: 3000px; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; opacity: 1; }
-        .collapsed-content { max-height: 0 !important; opacity: 0 !important; }
-        .rotated-arrow { transform: rotate(-90deg); }
+        .content-container { max-height: 3000px; overflow: hidden; transition: max-height 0.5s ease; }
+        .collapsed-content { max-height: 0 !important; }
 
         .list-item { border-bottom: 1px solid #fcfcfc; font-size: 0.75rem; }
         .pills { display: inline-block; font-size: 0.55rem; background-color: var(--pill-bg); color: var(--pill-text); padding: 2px 4px; border-radius: 4px; }
@@ -119,9 +127,7 @@
 <script>
     function toggleYear(contentId, headerElement) {
         const content = document.getElementById(contentId);
-        const arrow = headerElement.querySelector('.arrow');
         content.classList.toggle('collapsed-content');
-        arrow.classList.toggle('rotated-arrow');
     }
 </script>
 
