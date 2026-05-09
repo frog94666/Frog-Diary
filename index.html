@@ -2,7 +2,6 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>蛙仔開箱趣</title>
@@ -51,7 +50,7 @@ body{
     display:flex;
     justify-content:center;
 
-    padding:10px;
+    padding:12px;
 }
 
 /* 主容器 */
@@ -65,12 +64,14 @@ body{
 
     border-radius:24px;
 
-    padding:20px 10px;
+    padding:20px 14px;
 
     box-shadow:
         0 8px 30px rgba(0,0,0,0.03);
 
     overflow:hidden;
+
+    transition:all .3s ease;
 }
 
 /* Header */
@@ -100,11 +101,11 @@ header h1{
 
     display:flex;
 
-    margin-bottom:20px;
+    margin-bottom:22px;
 
     border:1px solid var(--line-color);
 
-    height:80px;
+    height:82px;
 
     overflow:hidden;
 }
@@ -137,7 +138,7 @@ header h1{
 
 .summary-item b{
 
-    font-size:1.1rem;
+    font-size:1.15rem;
 
     color:var(--accent);
 
@@ -172,22 +173,22 @@ header h1{
 /* 固定欄位 */
 
 .c-date{
-    width:48px;
+    width:52px;
     flex-shrink:0;
 }
 
 .c-name{
-    width:58px;
+    width:64px;
     flex-shrink:0;
     font-weight:600;
 }
 
 .c-nat{
-    width:42px;
+    width:52px;
     flex-shrink:0;
 }
 
-/* 中間彈性欄位 */
+/* 中間欄位 */
 
 .c-plan,
 .c-add,
@@ -202,19 +203,19 @@ header h1{
 
 .c-amt{
 
-    width:72px;
+    width:84px;
 
     flex-shrink:0;
 
-    text-align:right !important;
-
-    padding-right:8px;
+    text-align:right;
 
     font-weight:700;
 
     color:var(--accent);
 
     white-space:nowrap;
+
+    padding-right:2px;
 }
 
 /* Header */
@@ -223,9 +224,9 @@ header h1{
 
     border-bottom:1px solid var(--line-color);
 
-    padding-bottom:8px;
+    padding-bottom:10px;
 
-    margin-bottom:4px;
+    margin-bottom:6px;
 }
 
 .list-header span{
@@ -249,13 +250,13 @@ header h1{
 
     background:#faf9f7;
 
-    border-radius:10px;
+    border-radius:12px;
 
     border:1px solid var(--line-color);
 
-    margin:8px 0;
+    margin:10px 0;
 
-    padding:12px 15px;
+    padding:14px 16px;
 
     display:flex;
 
@@ -270,7 +271,7 @@ header h1{
 
 .year-title{
 
-    font-size:0.85rem;
+    font-size:0.9rem;
 
     font-weight:600;
 
@@ -279,7 +280,7 @@ header h1{
 
 .arrow{
 
-    font-size:0.6rem;
+    font-size:0.7rem;
 
     color:var(--text-light);
 
@@ -316,7 +317,7 @@ header h1{
 
 .list-item{
 
-    border-bottom:1px solid #fcfcfc;
+    border-bottom:1px solid #f7f7f7;
 
     font-size:0.72rem;
 }
@@ -333,7 +334,7 @@ header h1{
 
     color:var(--pill-text);
 
-    padding:2px 4px;
+    padding:2px 5px;
 
     border-radius:4px;
 
@@ -355,41 +356,130 @@ header h1{
 
     text-align:center;
 
-    margin-top:30px;
+    margin-top:32px;
 
-    padding:10px;
+    padding:12px;
 
-    font-size:0.6rem;
+    font-size:0.62rem;
 
     color:var(--text-light);
 
-    letter-spacing:3px;
+    letter-spacing:4px;
 
-    opacity:.5;
+    opacity:.45;
 }
 
-/* 小手機 */
+/* 📱 手機優化 */
 
 @media (max-width:480px){
 
     .container{
-        border-radius:18px;
-    }
-
-    .summary-item b{
-        font-size:1rem;
+        border-radius:20px;
+        padding:18px 12px;
     }
 
     .list-item{
-        font-size:0.68rem;
+        font-size:0.69rem;
+    }
+
+    .c-date{
+        width:50px;
     }
 
     .c-name{
-        width:54px;
+        width:60px;
+    }
+
+    .c-nat{
+        width:48px;
     }
 
     .c-amt{
-        width:66px;
+        width:78px;
+    }
+}
+
+/* 💻 電腦版自動放大 */
+
+@media (min-width:900px){
+
+    body{
+        padding:30px;
+    }
+
+    .container{
+
+        max-width:760px;
+
+        padding:30px 26px;
+
+        border-radius:30px;
+    }
+
+    header h1{
+
+        font-size:1.7rem;
+
+        letter-spacing:12px;
+
+        margin-bottom:28px;
+    }
+
+    .summary-box{
+
+        height:95px;
+
+        margin-bottom:28px;
+    }
+
+    .summary-item span{
+        font-size:0.8rem;
+    }
+
+    .summary-item b{
+        font-size:1.5rem;
+    }
+
+    .flex-row{
+        padding:18px 0;
+    }
+
+    .list-header span{
+        font-size:0.82rem;
+    }
+
+    .list-item{
+        font-size:0.92rem;
+    }
+
+    .year-header{
+        padding:18px 20px;
+    }
+
+    .year-title{
+        font-size:1rem;
+    }
+
+    .c-date{
+        width:80px;
+    }
+
+    .c-name{
+        width:100px;
+    }
+
+    .c-nat{
+        width:80px;
+    }
+
+    .c-amt{
+        width:120px;
+        font-size:1rem;
+    }
+
+    .footer{
+        margin-top:40px;
+        font-size:0.75rem;
     }
 }
 
