@@ -22,24 +22,23 @@
         .summary-item span { font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; }
         .summary-item b { font-size: 1.1rem; color: var(--accent); }
 
-        /* --- 關鍵修正：單一表格結構 --- */
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { font-size: 0.65rem; color: var(--text-light); font-weight: bold; padding: 10px 0; border-bottom: 1px solid var(--line-color); }
-        td { padding: 12px 0; font-size: 0.75rem; border-bottom: 1px solid #fcfcfc; }
+        /* --- 核心對齊邏輯 --- */
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: 5px; }
+        th { font-size: 0.65rem; color: var(--text-light); font-weight: bold; padding: 12px 0; border-bottom: 1px solid var(--line-color); }
+        td { padding: 12px 0; font-size: 0.75rem; border-bottom: 1px solid #fcfcfc; white-space: nowrap; }
         
-        /* 設定每欄精確比例，解決標題距離不一與對齊問題 */
-        .col-date { width: 15%; text-align: left; color: var(--text-light); font-size: 0.7rem; }
-        .col-name { width: 17%; text-align: center; font-weight: 600; }
-        .col-nation { width: 15%; text-align: center; }
+        /* 強制等寬比例分配 */
+        .col-date { width: 14%; text-align: left; color: var(--text-light); font-size: 0.7rem; }
+        .col-name { width: 18%; text-align: center; font-weight: 600; }
+        .col-nation { width: 14%; text-align: center; }
         .col-plan { width: 10%; text-align: center; }
-        .col-add { width: 15%; text-align: center; }
-        .col-tip { width: 10%; text-align: right; color: var(--text-light); } /* 修正小費對齊 */
-        .col-amt { width: 18%; text-align: right; font-weight: 700; color: var(--accent); }
+        .col-add { width: 14%; text-align: center; }
+        .col-tip { width: 10%; text-align: right; color: var(--text-light); padding-right: 2px; }
+        .col-amt { width: 20%; text-align: right; font-weight: 700; color: var(--accent); }
 
-        /* 年度紀錄摺疊 */
         .year-header { 
             background: #faf9f7; border-radius: 10px; border: 1px solid var(--line-color); 
-            margin: 10px 0; cursor: pointer; padding: 12px 15px;
+            margin: 15px 0 5px 0; cursor: pointer; padding: 12px 15px;
             display: flex; justify-content: space-between; align-items: center;
         }
         .year-title { font-size: 0.85rem; font-weight: 600; color: var(--accent); }
@@ -85,6 +84,49 @@
                     <tr><td class="col-date">05/03</td><td class="col-name">孟娜</td><td class="col-nation">越南</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">10,500</td></tr>
                     <tr><td class="col-date">05/01</td><td class="col-name">米露</td><td class="col-nation">台灣</td><td class="col-plan">-</td><td class="col-add"><span class="pills addon-pill">口爆</span></td><td class="col-tip">-</td><td class="col-amt">3,500</td></tr>
                     <tr><td class="col-date">04/18</td><td class="col-name">孟娜</td><td class="col-nation">越南</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">7,000</td></tr>
+                    <tr><td class="col-date">04/08</td><td class="col-name">小光</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,500</td></tr>
+                    <tr><td class="col-date">03/22</td><td class="col-name">薇倩</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">7,500</td></tr>
+                    <tr><td class="col-date">03/10</td><td class="col-name">芊卉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,500</td></tr>
+                    <tr><td class="col-date">03/06</td><td class="col-name">甘蓓</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">6,000</td></tr>
+                    <tr><td class="col-date">03/01</td><td class="col-name">綺綺</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,800</td></tr>
+                    <tr><td class="col-date">02/24</td><td class="col-name">幼寧</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,000</td></tr>
+                    <tr><td class="col-date">02/08</td><td class="col-name">蘇打</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,500</td></tr>
+                    <tr><td class="col-date">02/08</td><td class="col-name">小賢</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">3,000</td></tr>
+                    <tr><td class="col-date">01/31</td><td class="col-name">薇倩</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,000</td></tr>
+                    <tr><td class="col-date">01/29</td><td class="col-name">薇倩</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,500</td></tr>
+                    <tr><td class="col-date">01/25</td><td class="col-name">北茉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">01/17</td><td class="col-name">米莉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">01/10</td><td class="col-name">米莉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">01/06</td><td class="col-name">亮亮</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">01/03</td><td class="col-name">寶拉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">3,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="year-section">
+        <div class="year-header" onclick="toggleYear('c2025', this)">
+            <div class="year-title">2025 年度紀錄</div><div class="arrow">▼</div>
+        </div>
+        <div id="c2025" class="content-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-date">日期</th>
+                        <th class="col-name">名字</th>
+                        <th class="col-nation">國籍</th>
+                        <th class="col-plan">方案</th>
+                        <th class="col-add">加值</th>
+                        <th class="col-tip">小費</th>
+                        <th class="col-amt">金額</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="col-date">12/31</td><td class="col-name">奈香</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">12/28</td><td class="col-name">花乃</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,800</td></tr>
+                    <tr><td class="col-date">12/25</td><td class="col-name">夏希</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">12/08</td><td class="col-name">軒墨</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">6,000</td></tr>
+                    <tr><td class="col-date">12/05</td><td class="col-name">陽光</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add"><span class="pills addon-pill">2S</span></td><td class="col-tip">-</td><td class="col-amt">3,500</td></tr>
                 </tbody>
             </table>
         </div>
