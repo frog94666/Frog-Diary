@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>蛙仔開箱趣</title>
     <style>
         :root {
             --bg-color: #f2f0eb; --card-bg: #ffffff; --accent: #7a6f66; 
@@ -22,19 +21,19 @@
         .summary-item span { font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; }
         .summary-item b { font-size: 1.1rem; color: var(--accent); }
 
-        /* 核心對齊桌格系統 */
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-bottom: 10px; }
+        /* 核心對齊桌格：確保標題與內容絕對同步 */
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: 5px; }
         
-        /* 前 6 欄強制等寬 (約各 13.5%)，最後金額欄較寬 */
-        .w-fixed { width: 13.5%; text-align: center; }
-        .w-amt { width: 19%; text-align: right; }
+        /* 日期、名字、國籍、方案、加值、小費 全部設定為 13.5% (等寬) */
+        .col-fixed { width: 13.5%; text-align: center; }
+        /* 金額留剩餘空間 */
+        .col-amt { width: 19%; text-align: right; }
 
         th { font-size: 0.65rem; color: var(--text-light); font-weight: bold; padding: 12px 0; border-bottom: 1px solid var(--line-color); }
         td { padding: 14px 0; font-size: 0.75rem; border-bottom: 1px solid #fcfcfc; white-space: nowrap; vertical-align: middle; }
         
-        /* 文字位置校準 */
+        /* 針對特定列的微調 */
         .text-left { text-align: left; }
-        .text-center { text-align: center; }
         .text-right { text-align: right; }
 
         .year-header { 
@@ -72,33 +71,33 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="w-fixed text-left">日期</th>
-                        <th class="w-fixed">名字</th>
-                        <th class="w-fixed">國籍</th>
-                        <th class="w-fixed">方案</th>
-                        <th class="w-fixed">加值</th>
-                        <th class="w-fixed">小費</th>
-                        <th class="w-amt">金額</th>
+                        <th class="col-fixed text-left">日期</th>
+                        <th class="col-fixed">名字</th>
+                        <th class="col-fixed">國籍</th>
+                        <th class="col-fixed">方案</th>
+                        <th class="col-fixed">加值</th>
+                        <th class="col-fixed">小費</th>
+                        <th class="col-amt">金額</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="w-fixed text-left" style="color: var(--text-light);">05/03</td>
-                        <td class="w-fixed text-center" style="font-weight:600;">孟娜</td>
-                        <td class="w-fixed text-center">越南</td>
-                        <td class="w-fixed text-center">-</td>
-                        <td class="w-fixed text-center">-</td>
-                        <td class="w-fixed text-center">-</td>
-                        <td class="w-amt text-right" style="font-weight:700; color:var(--accent);">10,500</td>
+                        <td class="col-fixed text-left" style="color: var(--text-light);">05/03</td>
+                        <td class="col-fixed" style="font-weight:600;">孟娜</td>
+                        <td class="col-fixed">越南</td>
+                        <td class="col-fixed">-</td>
+                        <td class="col-fixed">-</td>
+                        <td class="col-fixed">-</td>
+                        <td class="col-amt" style="font-weight:700; color:var(--accent);">10,500</td>
                     </tr>
                     <tr>
-                        <td class="w-fixed text-left" style="color: var(--text-light);">05/01</td>
-                        <td class="w-fixed text-center" style="font-weight:600;">米露</td>
-                        <td class="w-fixed text-center">台灣</td>
-                        <td class="w-fixed text-center">-</td>
-                        <td class="w-fixed text-center"><span class="pills addon-pill">口爆</span></td>
-                        <td class="w-fixed text-center">-</td>
-                        <td class="w-amt text-right" style="font-weight:700; color:var(--accent);">3,500</td>
+                        <td class="col-fixed text-left" style="color: var(--text-light);">05/01</td>
+                        <td class="col-fixed" style="font-weight:600;">米露</td>
+                        <td class="col-fixed">台灣</td>
+                        <td class="col-fixed">-</td>
+                        <td class="col-fixed"><span class="pills addon-pill">口爆</span></td>
+                        <td class="col-fixed">-</td>
+                        <td class="col-amt" style="font-weight:700; color:var(--accent);">3,500</td>
                     </tr>
                     </tbody>
             </table>
