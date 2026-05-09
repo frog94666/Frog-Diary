@@ -11,42 +11,33 @@
             --pill-bg: #ebe8e2; --pill-text: #8c837a;
             --addon-bg: #fdf2f2; --addon-text: #e59a9a;
         }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-dark); font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        
-        .container { width: 100%; max-width: 480px; background-color: var(--card-bg); border-radius: 24px; padding: 20px 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
+        .container { width: 100%; max-width: 480px; background-color: var(--card-bg); border-radius: 24px; padding: 20px 15px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
         header h1 { text-align: center; font-weight: 300; letter-spacing: 6px; font-size: 1.2rem; color: var(--accent); margin: 0 0 20px 0; }
         
+        /* 頂部統計數據 */
         .summary-box { background-color: #faf9f7; border-radius: 16px; display: flex; margin-bottom: 20px; border: 1px solid var(--line-color); height: 80px; }
         .summary-item { flex: 1; border-right: 1px solid var(--line-color); display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .summary-item:last-child { border-right: none; }
         .summary-item span { font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; }
-        .summary-item b { font-size: 1.1rem; color: var(--accent); line-height: 1; }
+        .summary-item b { font-size: 1.1rem; color: var(--accent); }
 
-        /* --- 核心對齊機制：嚴格像素鎖定 --- */
-        .record-row { 
-            display: grid; 
-            /* 嚴格分配寬度：日期45, 名字65, 國籍45, 方案35, 加值50, 小費40, 金額(剩下) */
-            grid-template-columns: 45px 65px 45px 35px 50px 40px 1fr; 
-            align-items: center; 
-            width: 100%;
-        }
+        /* --- 核心修正：使用 Table 確保絕對對齊 --- */
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th { font-size: 0.65rem; color: var(--text-light); font-weight: bold; padding-bottom: 10px; border-bottom: 1px solid var(--line-color); }
+        td { padding: 12px 0; font-size: 0.75rem; border-bottom: 1px solid #fcfcfc; }
+        
+        /* 設定每欄寬度比例 */
+        .col-date { width: 14%; text-align: left; color: var(--text-light); font-size: 0.7rem; }
+        .col-name { width: 18%; text-align: center; font-weight: 600; }
+        .col-nation { width: 14%; text-align: center; }
+        .col-plan { width: 10%; text-align: center; }
+        .col-add { width: 16%; text-align: center; }
+        .col-tip { width: 10%; text-align: right; color: var(--text-light); padding-right: 5px; }
+        .col-amt { width: 18%; text-align: right; font-weight: 700; color: var(--accent); }
 
-        .list-header { border-bottom: 1px solid var(--line-color); padding-bottom: 10px; margin-bottom: 5px; }
-        .list-header span { font-size: 0.65rem; color: var(--text-light); font-weight: bold; text-align: center; }
-
-        /* 關鍵：小費與金額標題及內容全部強制靠右 */
-        .align-right { text-align: right !important; padding-right: 2px; }
-        .align-center { text-align: center !important; }
-        .align-left { text-align: left !important; }
-
-        .list-item { border-bottom: 1px solid #fcfcfc; font-size: 0.75rem; padding: 12px 0; }
-        .c-date { font-size: 0.7rem; color: var(--text-light); }
-        .c-name { font-weight: 600; padding-left: 5px; }
-        .c-tip { color: var(--text-light); }
-        .c-amt { font-weight: 700; color: var(--accent); font-family: 'Courier New', Courier, monospace; } /* 使用等寬字體增加對齊感 */
-
-        /* 折疊機制 */
+        /* 摺疊選單樣式 */
         .year-header { 
             background: #faf9f7; border-radius: 10px; border: 1px solid var(--line-color); 
             margin: 10px 0; cursor: pointer; padding: 12px 15px;
@@ -54,7 +45,7 @@
         }
         .year-title { font-size: 0.85rem; font-weight: 600; color: var(--accent); }
         .arrow { transition: transform 0.3s ease; font-size: 0.6rem; color: var(--text-light); }
-        .content-container { max-height: 5000px; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .content-container { max-height: 5000px; overflow: hidden; transition: max-height 0.4s ease-in-out; }
         .collapsed { max-height: 0 !important; }
         .rotate-arrow { transform: rotate(-90deg); }
 
@@ -74,33 +65,47 @@
         <div class="summary-item"><span>總計</span><b>109,200</b></div>
     </div>
 
-    <div class="record-row list-header">
-        <span class="align-left">日期</span><span class="align-center">名字</span><span class="align-center">國籍</span><span class="align-center">方案</span><span class="align-center">加值</span><span class="align-right">小費</span><span class="align-right">金額</span>
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th class="col-date">日期</th>
+                <th class="col-name">名字</th>
+                <th class="col-nation">國籍</th>
+                <th class="col-plan">方案</th>
+                <th class="col-add">加值</th>
+                <th class="col-tip">小費</th>
+                <th class="col-amt">金額</th>
+            </tr>
+        </thead>
+    </table>
 
     <div class="year-section">
         <div class="year-header" onclick="toggleYear('c2026', this)">
             <div class="year-title">2026 年度紀錄</div><div class="arrow">▼</div>
         </div>
         <div id="c2026" class="content-container">
-            <div class="record-row list-item"><div class="c-date align-left">05/03</div><div class="c-name">孟娜</div><div class="align-center">越南</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">10,500</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">05/01</div><div class="c-name">米露</div><div class="align-center">台灣</div><div class="align-center">-</div><div class="align-center"><span class="pills addon-pill">口爆</span></div><div class="c-tip align-right">-</div><div class="c-amt align-right">3,500</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">04/18</div><div class="c-name">孟娜</div><div class="align-center">越南</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">7,000</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">04/08</div><div class="c-name">小光</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,500</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">03/22</div><div class="c-name">薇倩</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">7,500</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">03/10</div><div class="c-name">芊卉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,500</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">03/06</div><div class="c-name">甘蓓</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">6,000</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">03/01</div><div class="c-name">綺綺</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,800</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">02/24</div><div class="c-name">幼寧</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,000</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">02/08</div><div class="c-name">蘇打</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,500</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">02/08</div><div class="c-name">小賢</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">3,000</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">01/31</div><div class="c-name">薇倩</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,000</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">01/29</div><div class="c-name">薇倩</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,500</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">01/25</div><div class="c-name">北茉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">01/17</div><div class="c-name">米莉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">01/10</div><div class="c-name">米莉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">01/06</div><div class="c-name">亮亮</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">01/03</div><div class="c-name">寶拉</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">3,000</div></div>
+            <table>
+                <tbody>
+                    <tr><td class="col-date">05/03</td><td class="col-name">孟娜</td><td class="col-nation">越南</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">10,500</td></tr>
+                    <tr><td class="col-date">05/01</td><td class="col-name">米露</td><td class="col-nation">台灣</td><td class="col-plan">-</td><td class="col-add"><span class="pills addon-pill">口爆</span></td><td class="col-tip">-</td><td class="col-amt">3,500</td></tr>
+                    <tr><td class="col-date">04/18</td><td class="col-name">孟娜</td><td class="col-nation">越南</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">7,000</td></tr>
+                    <tr><td class="col-date">04/08</td><td class="col-name">小光</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,500</td></tr>
+                    <tr><td class="col-date">03/22</td><td class="col-name">薇倩</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">7,500</td></tr>
+                    <tr><td class="col-date">03/10</td><td class="col-name">芊卉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,500</td></tr>
+                    <tr><td class="col-date">03/06</td><td class="col-name">甘蓓</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">6,000</td></tr>
+                    <tr><td class="col-date">03/01</td><td class="col-name">綺綺</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,800</td></tr>
+                    <tr><td class="col-date">02/24</td><td class="col-name">幼寧</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,000</td></tr>
+                    <tr><td class="col-date">02/08</td><td class="col-name">蘇打</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,500</td></tr>
+                    <tr><td class="col-date">02/08</td><td class="col-name">小賢</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">3,000</td></tr>
+                    <tr><td class="col-date">01/31</td><td class="col-name">薇倩</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,000</td></tr>
+                    <tr><td class="col-date">01/29</td><td class="col-name">薇倩</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,500</td></tr>
+                    <tr><td class="col-date">01/25</td><td class="col-name">北茉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">01/17</td><td class="col-name">米莉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">01/10</td><td class="col-name">米莉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">01/06</td><td class="col-name">亮亮</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">01/03</td><td class="col-name">寶拉</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">3,000</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -109,11 +114,15 @@
             <div class="year-title">2025 年度紀錄</div><div class="arrow">▼</div>
         </div>
         <div id="c2025" class="content-container">
-            <div class="record-row list-item"><div class="c-date align-left">12/31</div><div class="c-name">奈香</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">12/28</div><div class="c-name">花乃</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">2,800</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">12/25</div><div class="c-name">夏希</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">5,600</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">12/08</div><div class="c-name">軒墨</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center">-</div><div class="c-tip align-right">-</div><div class="c-amt align-right">6,000</div></div>
-            <div class="record-row list-item"><div class="c-date align-left">12/05</div><div class="c-name">陽光</div><div class="align-center">泰國</div><div class="align-center">-</div><div class="align-center"><span class="pills addon-pill">2S</span></div><div class="c-tip align-right">-</div><div class="c-amt align-right">3,500</div></div>
+            <table>
+                <tbody>
+                    <tr><td class="col-date">12/31</td><td class="col-name">奈香</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">12/28</td><td class="col-name">花乃</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">2,800</td></tr>
+                    <tr><td class="col-date">12/25</td><td class="col-name">夏希</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">5,600</td></tr>
+                    <tr><td class="col-date">12/08</td><td class="col-name">軒墨</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add">-</td><td class="col-tip">-</td><td class="col-amt">6,000</td></tr>
+                    <tr><td class="col-date">12/05</td><td class="col-name">陽光</td><td class="col-nation">泰國</td><td class="col-plan">-</td><td class="col-add"><span class="pills addon-pill">2S</span></td><td class="col-tip">-</td><td class="col-amt">3,500</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
