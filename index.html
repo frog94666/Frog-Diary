@@ -11,53 +11,64 @@
             --pill-bg: #ebe8e2; --pill-text: #8c837a;
             --addon-bg: #fdf2f2; --addon-text: #e59a9a;
         }
-        body { background-color: var(--bg-color); color: var(--text-dark); font-family: -apple-system, sans-serif; margin: 0; padding: 8px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 500px; background-color: var(--card-bg); border-radius: 20px; padding: 20px 8px 40px 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); box-sizing: border-box; }
-        header h1 { text-align: center; font-weight: 300; letter-spacing: 8px; font-size: 1.3rem; color: var(--accent); margin: 10px 0 20px 0; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-dark); font-family: -apple-system, sans-serif; margin: 0; padding: 12px; display: flex; justify-content: center; }
         
-        .summary-box { background-color: #faf9f7; border-radius: 12px; padding: 12px 0; display: flex; justify-content: space-around; margin-bottom: 15px; border: 1px solid var(--line-color); }
+        .container { width: 100%; max-width: 480px; background-color: var(--card-bg); border-radius: 24px; padding: 24px 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
+        header h1 { text-align: center; font-weight: 300; letter-spacing: 6px; font-size: 1.2rem; color: var(--accent); margin: 0 0 20px 0; }
+        
+        .summary-box { background-color: #faf9f7; border-radius: 16px; padding: 14px 0; display: flex; margin-bottom: 20px; border: 1px solid var(--line-color); }
         .summary-item { text-align: center; flex: 1; border-right: 1px solid var(--line-color); }
         .summary-item:last-child { border-right: none; }
-        .summary-item span { display: block; font-size: 0.65rem; color: var(--text-light); margin-bottom: 2px; }
-        .summary-item b { font-size: 0.9rem; color: var(--accent); }
+        .summary-item span { display: block; font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; }
+        .summary-item b { font-size: 1rem; color: var(--accent); }
 
-        .table-container { width: 100%; overflow-x: hidden; } /* 取消橫向滑動 */
-
-        /* 重新分配比例，確保在手機上不擁擠 */
-        /* 日期(14%) 名字(18%) 國籍(14%) 方案(10%) 加值(16%) 小費(10%) 金額(18%) */
-        .grid-system { 
+        /* 統一比例：日期(14%) 名字(18%) 國籍(13%) 方案(9%) 加值(15%) 小費(9%) 金額(22%) */
+        .grid-row { 
             display: grid; 
-            grid-template-columns: 14% 18% 14% 10% 16% 10% 18%; 
+            grid-template-columns: 14% 18% 13% 9% 15% 9% 22%; 
             align-items: center; 
             text-align: center;
             width: 100%;
         }
 
-        .list-header { background: #f7f5f2; border-radius: 6px; padding: 10px 0; margin-bottom: 8px; }
-        .list-header span { font-size: 0.65rem; color: var(--text-light); font-weight: bold; }
+        .list-header { border-bottom: 1px solid var(--line-color); padding-bottom: 8px; margin-bottom: 4px; }
+        .list-header span { font-size: 0.6rem; color: var(--text-light); font-weight: bold; }
 
-        .list-item { padding: 12px 0; border-bottom: 1px solid #f9f9f9; }
-        .col { font-size: 0.75rem; display: flex; align-items: center; justify-content: center; min-height: 30px; word-break: break-all; }
-        
-        .pills { display: inline-block; font-size: 0.6rem; background-color: var(--pill-bg); color: var(--pill-text); padding: 2px 4px; border-radius: 4px; line-height: 1.1; }
-        .addon-pill { background-color: var(--addon-bg); color: var(--addon-text); font-weight: bold; }
-        .price-text { color: var(--accent); font-weight: 600; font-size: 0.8rem; }
-
+        .year-section { margin-bottom: 10px; }
         .year-header { 
-            background: #faf9f7; border-radius: 8px; border: 1px solid var(--line-color); 
-            margin: 10px 0 8px 0; cursor: pointer; width: 100%; padding: 10px 0;
-            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
+            background: #faf9f7; border-radius: 10px; border: 1px solid var(--line-color); 
+            margin: 8px 0; cursor: pointer; padding: 12px 15px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .year-title { padding-left: 15px; font-size: 0.85rem; font-weight: 600; color: var(--accent); }
-        .arrow { padding-right: 15px; transition: transform 0.3s; font-size: 0.7rem; color: var(--text-light); }
+        .year-title { font-size: 0.85rem; font-weight: 600; color: var(--accent); }
+        .arrow { transition: transform 0.3s; font-size: 0.7rem; color: var(--text-light); }
         
-        .hidden { display: none !important; }
-        .collapsed .arrow { transform: rotate(-90deg); }
+        /* 平滑展開動畫：解決位置跳動 */
+        .content-container {
+            display: grid;
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 0.4s ease-out;
+        }
+        .content-container.collapsed {
+            grid-template-rows: 0fr;
+        }
+        .content-container.collapsed .arrow { transform: rotate(-90deg); }
+        .content-wrapper { overflow: hidden; }
 
-        .footer { text-align: center; margin-top: 20px; padding: 15px; font-size: 0.65rem; color: var(--text-light); letter-spacing: 4px; opacity: 0.4; }
+        .list-item { padding: 14px 0; border-bottom: 1px solid #fcfcfc; }
+        .col { font-size: 0.72rem; color: var(--text-dark); }
+        .name-bold { font-weight: 600; }
+        .price-text { color: var(--accent); font-weight: 700; font-size: 0.8rem; text-align: right; padding-right: 2px; }
+        
+        .pills { display: inline-block; font-size: 0.55rem; background-color: var(--pill-bg); color: var(--pill-text); padding: 1px 4px; border-radius: 4px; }
+        .addon-pill { background-color: var(--addon-bg); color: var(--addon-text); font-weight: bold; }
+
+        .footer { text-align: center; margin-top: 30px; padding: 10px; font-size: 0.6rem; color: var(--text-light); letter-spacing: 3px; opacity: 0.5; }
     </style>
 </head>
 <body>
+
 <div class="container">
     <header><h1>蛙 仔 旅 行 趣</h1></header>
     
@@ -67,39 +78,63 @@
         <div class="summary-item"><span>總計</span><b>109,200</b></div>
     </div>
 
-    <div class="table-container">
-        <div class="grid-system list-header">
-            <span>日期</span><span>名字</span><span>國籍</span><span>方案</span><span>加值</span><span>小費</span><span>金額</span>
-        </div>
+    <div class="grid-row list-header">
+        <span>日期</span><span>名字</span><span>國籍</span><span>方案</span><span>加值</span><span>小費</span><span>金額</span>
+    </div>
 
-        <div class="year-header" onclick="toggleYear('y2026', this)">
+    <div class="year-section">
+        <div class="year-header" onclick="document.getElementById('wrapper2026').classList.toggle('collapsed')">
             <div class="year-title">2026 年度紀錄</div>
             <div class="arrow">▼</div>
         </div>
-        <div id="y2026">
-            <div class="grid-system list-item"><div class="col">05/03</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">10,500</div></div>
-            <div class="grid-system list-item"><div class="col">05/01</div><div class="col"><b>米露</b></div><div class="col">台灣</div><div class="col">-</div><div class="col"><span class="pills addon-pill">口爆</span></div><div class="col">-</div><div class="col price-text">3,500</div></div>
-            <div class="grid-system list-item"><div class="col">04/18</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">7,000</div></div>
-            <div class="grid-system list-item"><div class="col">12/05</div><div class="col"><b>陽光</b></div><div class="col">泰國</div><div class="col">-</div><div class="col"><span class="pills addon-pill">2S</span></div><div class="col">-</div><div class="col price-text">3,500</div></div>
+        
+        <div id="wrapper2026" class="content-container">
+            <div class="content-wrapper">
+                <div class="grid-row list-item">
+                    <div class="col">05/03</div>
+                    <div class="col name-bold">孟娜</div>
+                    <div class="col">越南</div>
+                    <div class="col">-</div>
+                    <div class="col">-</div>
+                    <div class="col">-</div>
+                    <div class="col price-text">10,500</div>
+                </div>
+                
+                <div class="grid-row list-item">
+                    <div class="col">05/01</div>
+                    <div class="col name-bold">米露</div>
+                    <div class="col">台灣</div>
+                    <div class="col">-</div>
+                    <div class="col"><span class="pills addon-pill">口爆</span></div>
+                    <div class="col">-</div>
+                    <div class="col price-text">3,500</div>
+                </div>
+
+                <div class="grid-row list-item">
+                    <div class="col">04/18</div>
+                    <div class="col name-bold">孟娜</div>
+                    <div class="col">越南</div>
+                    <div class="col">-</div>
+                    <div class="col">-</div>
+                    <div class="col">-</div>
+                    <div class="col price-text">7,000</div>
+                </div>
+
+                <div class="grid-row list-item">
+                    <div class="col">12/05</div>
+                    <div class="col name-bold">陽光</div>
+                    <div class="col">泰國</div>
+                    <div class="col">-</div>
+                    <div class="col"><span class="pills addon-pill">2S</span></div>
+                    <div class="col">-</div>
+                    <div class="col price-text">3,500</div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="footer">蛙 仔 旅 行 趣</div>
+    <div class="footer">W A Z A I - D I A R Y</div>
 </div>
 
-<script>
-    function toggleYear(id, header) {
-        const target = document.getElementById(id);
-        if (target.style.display === 'none' || target.classList.contains('hidden')) {
-            target.classList.remove('hidden');
-            target.style.display = 'block';
-            header.classList.remove('collapsed');
-        } else {
-            target.classList.add('hidden');
-            target.style.display = 'none';
-            header.classList.add('collapsed');
-        }
-    }
-</script>
 </body>
 </html>
