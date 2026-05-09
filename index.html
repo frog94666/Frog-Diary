@@ -14,7 +14,7 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: var(--text-dark); font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
         
-        .container { width: 100%; max-width: 480px; background-color: var(--card-bg); border-radius: 24px; padding: 20px 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
+        .container { width: 100%; max-width: 480px; background-color: var(--card-bg); border-radius: 24px; padding: 20px 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
         header h1 { text-align: center; font-weight: 300; letter-spacing: 6px; font-size: 1.2rem; color: var(--accent); margin: 0 0 20px 0; }
         
         .summary-box { background-color: #faf9f7; border-radius: 16px; display: flex; margin-bottom: 20px; border: 1px solid var(--line-color); height: 80px; }
@@ -23,24 +23,26 @@
         .summary-item span { font-size: 0.65rem; color: var(--text-light); margin-bottom: 4px; }
         .summary-item b { font-size: 1.1rem; color: var(--accent); line-height: 1; }
 
-        /* 使用 Table 佈局強制鎖死寬度 */
-        .table-view { display: table; width: 100%; border-collapse: collapse; table-layout: fixed; }
-        .row { display: table-row; }
-        .cell { display: table-cell; vertical-align: middle; padding: 12px 2px; text-align: center; font-size: 0.72rem; }
+        /* --- 核心修正：使用 Grid 鎖死寬度 --- */
+        .grid-row { 
+            display: grid; 
+            /* 固定像素寬度，不論內容長短，格子大小絕對不變 */
+            grid-template-columns: 45px 65px 42px 35px 55px 45px 1fr; 
+            align-items: center; 
+            width: 100%;
+            text-align: center;
+            padding: 12px 0;
+        }
 
-        /* 定義每一欄的絕對寬度百分比 */
-        .w-date { width: 14%; text-align: left; padding-left: 5px; }
-        .w-name { width: 16%; font-weight: 600; }
-        .w-nat  { width: 12%; }
-        .w-plan { width: 10%; }
-        .w-add  { width: 18%; }
-        /* 金額與小費強制靠右 */
-        .w-tip  { width: 14%; text-align: right; color: var(--text-light); }
-        .w-amt  { width: 16%; text-align: right; padding-right: 8px; font-weight: 700; color: var(--accent); }
+        .list-header { border-bottom: 1px solid var(--line-color); padding-bottom: 8px; }
+        .list-header span { font-size: 0.65rem; color: var(--text-light); font-weight: bold; }
 
-        .list-header { border-bottom: 1px solid var(--line-color); }
-        .list-header .cell { font-size: 0.65rem; color: var(--text-light); font-weight: bold; padding-bottom: 8px; }
+        /* 金額與小費強制靠右對齊 */
+        .c-tip { text-align: right; color: var(--text-light); padding-right: 5px; }
+        .c-amt { text-align: right; font-weight: 700; color: var(--accent); padding-right: 5px; }
 
+        /* 年份摺疊與動畫 */
+        .year-section { margin-bottom: 10px; }
         .year-header { 
             background: #faf9f7; border-radius: 10px; border: 1px solid var(--line-color); 
             margin: 8px 0; cursor: pointer; padding: 12px 15px;
@@ -49,11 +51,15 @@
         .year-title { font-size: 0.85rem; font-weight: 600; color: var(--accent); }
         .arrow { transition: transform 0.4s ease; font-size: 0.6rem; color: var(--text-light); }
         
-        .content-container { max-height: 5000px; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+        .content-container { 
+            max-height: 5000px; 
+            overflow: hidden; 
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
         .collapsed { max-height: 0 !important; }
         .rotate-arrow { transform: rotate(-90deg); }
 
-        .list-item { border-bottom: 1px solid #fcfcfc; }
+        .list-item { border-bottom: 1px solid #fcfcfc; font-size: 0.72rem; }
         .pills { display: inline-block; font-size: 0.55rem; background-color: var(--pill-bg); color: var(--pill-text); padding: 2px 4px; border-radius: 4px; }
         .addon-pill { background-color: var(--addon-bg); color: var(--addon-text); font-weight: bold; }
 
@@ -71,16 +77,8 @@
         <div class="summary-item"><span>總計</span><b>109,200</b></div>
     </div>
 
-    <div class="table-view list-header">
-        <div class="row">
-            <div class="cell w-date">日期</div>
-            <div class="cell w-name">名字</div>
-            <div class="cell w-nat">國籍</div>
-            <div class="cell w-plan">方案</div>
-            <div class="cell w-add">加值</div>
-            <div class="cell w-tip">小費</div>
-            <div class="cell w-amt">金額</div>
-        </div>
+    <div class="grid-row list-header">
+        <span>日期</span><span>名字</span><span>國籍</span><span>方案</span><span>加值</span><span class="c-tip">小費</span><span class="c-amt">金額</span>
     </div>
 
     <div class="year-section">
@@ -89,26 +87,24 @@
             <div class="arrow">▼</div>
         </div>
         <div id="content2026" class="content-container">
-            <div class="table-view">
-                <div class="row list-item"><div class="cell w-date">05/03</div><div class="cell w-name">孟娜</div><div class="cell w-nat">越南</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">10,500</div></div>
-                <div class="row list-item"><div class="cell w-date">05/01</div><div class="cell w-name">米露</div><div class="cell w-nat">台灣</div><div class="cell w-plan">-</div><div class="cell w-add"><span class="pills addon-pill">口爆</span></div><div class="cell w-tip">-</div><div class="cell w-amt">3,500</div></div>
-                <div class="row list-item"><div class="cell w-date">04/18</div><div class="cell w-name">孟娜</div><div class="cell w-nat">越南</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">7,000</div></div>
-                <div class="row list-item"><div class="cell w-date">04/08</div><div class="cell w-name">小光</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">2,500</div></div>
-                <div class="row list-item"><div class="cell w-date">03/22</div><div class="cell w-name">薇倩</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">7,500</div></div>
-                <div class="row list-item"><div class="cell w-date">03/10</div><div class="cell w-name">芊卉</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">2,500</div></div>
-                <div class="row list-item"><div class="cell w-date">03/06</div><div class="cell w-name">甘蓓</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">6,000</div></div>
-                <div class="row list-item"><div class="cell w-date">03/01</div><div class="cell w-name">綺綺</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">2,800</div></div>
-                <div class="row list-item"><div class="cell w-date">02/24</div><div class="cell w-name">幼寧</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">5,000</div></div>
-                <div class="row list-item"><div class="cell w-date">02/08</div><div class="cell w-name">蘇打</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">2,500</div></div>
-                <div class="row list-item"><div class="cell w-date">02/08</div><div class="cell w-name">小賢</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">3,000</div></div>
-                <div class="row list-item"><div class="cell w-date">01/31</div><div class="cell w-name">薇倩</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">5,000</div></div>
-                <div class="row list-item"><div class="cell w-date">01/29</div><div class="cell w-name">薇倩</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">2,500</div></div>
-                <div class="row list-item"><div class="cell w-date">01/25</div><div class="cell w-name">北茉</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">5,600</div></div>
-                <div class="row list-item"><div class="cell w-date">01/17</div><div class="cell w-name">米莉</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">5,600</div></div>
-                <div class="row list-item"><div class="cell w-date">01/10</div><div class="cell w-name">米莉</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">5,600</div></div>
-                <div class="row list-item"><div class="cell w-date">01/06</div><div class="cell w-name">亮亮</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">5,600</div></div>
-                <div class="row list-item"><div class="cell w-date">01/03</div><div class="cell w-name">寶拉</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">3,000</div></div>
-            </div>
+            <div class="grid-row list-item"><div>05/03</div><div style="font-weight:600">孟娜</div><div>越南</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">10,500</div></div>
+            <div class="grid-row list-item"><div>05/01</div><div style="font-weight:600">米露</div><div>台灣</div><div>-</div><div><span class="pills addon-pill">口爆</span></div><div class="c-tip">-</div><div class="c-amt">3,500</div></div>
+            <div class="grid-row list-item"><div>04/18</div><div style="font-weight:600">孟娜</div><div>越南</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">7,000</div></div>
+            <div class="grid-row list-item"><div>04/08</div><div style="font-weight:600">小光</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,500</div></div>
+            <div class="grid-row list-item"><div>03/22</div><div style="font-weight:600">薇倩</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">7,500</div></div>
+            <div class="grid-row list-item"><div>03/10</div><div style="font-weight:600">芊卉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,500</div></div>
+            <div class="grid-row list-item"><div>03/06</div><div style="font-weight:600">甘蓓</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">6,000</div></div>
+            <div class="grid-row list-item"><div>03/01</div><div style="font-weight:600">綺綺</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,800</div></div>
+            <div class="grid-row list-item"><div>02/24</div><div style="font-weight:600">幼寧</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,000</div></div>
+            <div class="grid-row list-item"><div>02/08</div><div style="font-weight:600">蘇打</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,500</div></div>
+            <div class="grid-row list-item"><div>02/08</div><div style="font-weight:600">小賢</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">3,000</div></div>
+            <div class="grid-row list-item"><div>01/31</div><div style="font-weight:600">薇倩</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,000</div></div>
+            <div class="grid-row list-item"><div>01/29</div><div style="font-weight:600">薇倩</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,500</div></div>
+            <div class="grid-row list-item"><div>01/25</div><div style="font-weight:600">北茉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
+            <div class="grid-row list-item"><div>01/17</div><div style="font-weight:600">米莉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
+            <div class="grid-row list-item"><div>01/10</div><div style="font-weight:600">米莉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
+            <div class="grid-row list-item"><div>01/06</div><div style="font-weight:600">亮亮</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
+            <div class="grid-row list-item"><div>01/03</div><div style="font-weight:600">寶拉</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">3,000</div></div>
         </div>
     </div>
 
@@ -118,13 +114,11 @@
             <div class="arrow">▼</div>
         </div>
         <div id="content2025" class="content-container">
-            <div class="table-view">
-                <div class="row list-item"><div class="cell w-date">12/31</div><div class="cell w-name">奈香</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">5,600</div></div>
-                <div class="row list-item"><div class="cell w-date">12/28</div><div class="cell w-name">花乃</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">2,800</div></div>
-                <div class="row list-item"><div class="cell w-date">12/25</div><div class="cell w-name">夏希</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">5,600</div></div>
-                <div class="row list-item"><div class="cell w-date">12/08</div><div class="cell w-name">軒墨</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add">-</div><div class="cell w-tip">-</div><div class="cell w-amt">6,000</div></div>
-                <div class="row list-item"><div class="cell w-date">12/05</div><div class="cell w-name">陽光</div><div class="cell w-nat">泰國</div><div class="cell w-plan">-</div><div class="cell w-add"><span class="pills addon-pill">2S</span></div><div class="cell w-tip">-</div><div class="cell w-amt">3,500</div></div>
-            </div>
+            <div class="grid-row list-item"><div>12/31</div><div style="font-weight:600">奈香</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
+            <div class="grid-row list-item"><div>12/28</div><div style="font-weight:600">花乃</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">2,800</div></div>
+            <div class="grid-row list-item"><div>12/25</div><div style="font-weight:600">夏希</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">5,600</div></div>
+            <div class="grid-row list-item"><div>12/08</div><div style="font-weight:600">軒墨</div><div>泰國</div><div>-</div><div>-</div><div class="c-tip">-</div><div class="c-amt">6,000</div></div>
+            <div class="grid-row list-item"><div>12/05</div><div style="font-weight:600">陽光</div><div>泰國</div><div>-</div><div><span class="pills addon-pill">2S</span></div><div class="c-tip">-</div><div class="c-amt">3,500</div></div>
         </div>
     </div>
 
