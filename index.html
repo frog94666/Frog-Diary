@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>蛙仔盲盒日記</title>
+    <title>蛙仔盲盒日記 - 朋友分享版</title>
     <style>
         :root {
             --bg-color: #f2f0eb; --card-bg: #ffffff; --accent: #7a6f66; 
@@ -22,12 +22,13 @@
         .summary-item b { font-size: 1rem; color: var(--accent); }
 
         .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 10px; }
+        /* 核心表格結構 */
         .grid-system { 
             display: grid; 
             grid-template-columns: 75px 1fr 1fr 1fr 1fr 1fr 90px; 
             align-items: center; 
             text-align: center;
-            min-width: 580px; 
+            min-width: 580px; /* 確保內容不會擠壓 */
         }
 
         .list-header { background: #f7f5f2; border-radius: 8px; padding: 12px 0; margin-bottom: 10px; }
@@ -40,7 +41,28 @@
         .addon-pill { background-color: var(--addon-bg); color: var(--addon-text); font-weight: bold; }
         
         .price-text { color: var(--accent); font-weight: 600; }
-        .year-title { font-size: 0.9rem; font-weight: 500; color: var(--accent); padding: 12px 15px; background: #faf9f7; border-radius: 10px; border: 1px solid var(--line-color); margin: 15px 0 10px 0; display: block; text-align: left; }
+
+        /* 年度標題框修正 - 設為 inline-block 確保與表格一樣長 */
+        .year-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px 15px; 
+            background: #faf9f7; 
+            border-radius: 10px; 
+            border: 1px solid var(--line-color); 
+            margin: 15px 0 10px 0; 
+            cursor: pointer;
+            min-width: 550px; /* 寬度配合表格，解決框不夠長的問題 */
+            box-sizing: border-box;
+        }
+        .year-title { font-size: 0.9rem; font-weight: 500; color: var(--accent); }
+        .arrow { transition: transform 0.3s; font-size: 0.7rem; color: var(--text-light); }
+        
+        /* 隱藏邏輯 */
+        .hidden { display: none !important; }
+        .collapsed .arrow { transform: rotate(-90deg); }
+
         .footer { text-align: center; margin-top: 30px; padding: 20px; font-size: 0.7rem; color: var(--text-light); letter-spacing: 5px; opacity: 0.4; }
     </style>
 </head>
@@ -59,35 +81,58 @@
             <span>日期</span><span>名字</span><span>國籍</span><span>方案</span><span>加值</span><span>小費</span><span>金額</span>
         </div>
 
-        <span class="year-title">2026 年度紀錄</span>
-        <div class="grid-system list-item"><div class="col">05/03</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">10,500</div></div>
-        <div class="grid-system list-item"><div class="col">05/01</div><div class="col"><b>米露</b></div><div class="col">台灣</div><div class="col">-</div><div class="col"><span class="pills addon-pill">口爆</span></div><div class="col">-</div><div class="col price-text">3,500</div></div>
-        <div class="grid-system list-item"><div class="col">04/18</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">7,000</div></div>
-        <div class="grid-system list-item"><div class="col">04/08</div><div class="col"><b>小光</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
-        <div class="grid-system list-item"><div class="col">03/22</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">7,500</div></div>
-        <div class="grid-system list-item"><div class="col">03/10</div><div class="col"><b>芊卉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
-        <div class="grid-system list-item"><div class="col">03/06</div><div class="col"><b>甘蓓</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">6,000</div></div>
-        <div class="grid-system list-item"><div class="col">03/01</div><div class="col"><b>綺綺</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,800</div></div>
-        <div class="grid-system list-item"><div class="col">02/24</div><div class="col"><b>幼寧</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,000</div></div>
-        <div class="grid-system list-item"><div class="col">02/08</div><div class="col"><b>蘇打</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
-        <div class="grid-system list-item"><div class="col">02/08</div><div class="col"><b>小賢</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">3,000</div></div>
-        <div class="grid-system list-item"><div class="col">01/31</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,000</div></div>
-        <div class="grid-system list-item"><div class="col">01/29</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
-        <div class="grid-system list-item"><div class="col">01/25</div><div class="col"><b>北茉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
-        <div class="grid-system list-item"><div class="col">01/17</div><div class="col"><b>米莉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
-        <div class="grid-system list-item"><div class="col">01/10</div><div class="col"><b>米莉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
-        <div class="grid-system list-item"><div class="col">01/06</div><div class="col"><b>亮亮</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
-        <div class="grid-system list-item"><div class="col">01/03</div><div class="col"><b>寶拉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">3,000</div></div>
+        <div class="year-header" onclick="toggleYear('y2026', this)">
+            <span class="year-title">2026 年度紀錄</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div id="y2026">
+            <div class="grid-system list-item"><div class="col">05/03</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">10,500</div></div>
+            <div class="grid-system list-item"><div class="col">05/01</div><div class="col"><b>米露</b></div><div class="col">台灣</div><div class="col">-</div><div class="col"><span class="pills addon-pill">口爆</span></div><div class="col">-</div><div class="col price-text">3,500</div></div>
+            <div class="grid-system list-item"><div class="col">04/18</div><div class="col"><b>孟娜</b></div><div class="col">越南</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">7,000</div></div>
+            <div class="grid-system list-item"><div class="col">04/08</div><div class="col"><b>小光</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
+            <div class="grid-system list-item"><div class="col">03/22</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">7,500</div></div>
+            <div class="grid-system list-item"><div class="col">03/10</div><div class="col"><b>芊卉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
+            <div class="grid-system list-item"><div class="col">03/06</div><div class="col"><b>甘蓓</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">6,000</div></div>
+            <div class="grid-system list-item"><div class="col">03/01</div><div class="col"><b>綺綺</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,800</div></div>
+            <div class="grid-system list-item"><div class="col">02/24</div><div class="col"><b>幼寧</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,000</div></div>
+            <div class="grid-system list-item"><div class="col">02/08</div><div class="col"><b>蘇打</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
+            <div class="grid-system list-item"><div class="col">02/08</div><div class="col"><b>小賢</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">3,000</div></div>
+            <div class="grid-system list-item"><div class="col">01/31</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,000</div></div>
+            <div class="grid-system list-item"><div class="col">01/29</div><div class="col"><b>薇倩</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,500</div></div>
+            <div class="grid-system list-item"><div class="col">01/25</div><div class="col"><b>北茉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+            <div class="grid-system list-item"><div class="col">01/17</div><div class="col"><b>米莉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+            <div class="grid-system list-item"><div class="col">01/10</div><div class="col"><b>米莉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+            <div class="grid-system list-item"><div class="col">01/06</div><div class="col"><b>亮亮</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+            <div class="grid-system list-item"><div class="col">01/03</div><div class="col"><b>寶拉</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">3,000</div></div>
+        </div>
 
-        <span class="year-title">2025 年度紀錄</span>
-        <div class="grid-system list-item"><div class="col">12/31</div><div class="col"><b>奈香</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
-        <div class="grid-system list-item"><div class="col">12/28</div><div class="col"><b>花乃</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,800</div></div>
-        <div class="grid-system list-item"><div class="col">12/25</div><div class="col"><b>夏希</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
-        <div class="grid-system list-item"><div class="col">12/08</div><div class="col"><b>軒墨</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">6,000</div></div>
-        <div class="grid-system list-item"><div class="col">12/05</div><div class="col"><b>陽光</b></div><div class="col">泰國</div><div class="col">-</div><div class="col"><span class="pills addon-pill">2S</span></div><div class="col">-</div><div class="col price-text">3,500</div></div>
+        <div class="year-header" onclick="toggleYear('y2025', this)">
+            <span class="year-title">2025 年度紀錄</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div id="y2025">
+            <div class="grid-system list-item"><div class="col">12/31</div><div class="col"><b>奈香</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+            <div class="grid-system list-item"><div class="col">12/28</div><div class="col"><b>花乃</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">2,800</div></div>
+            <div class="grid-system list-item"><div class="col">12/25</div><div class="col"><b>夏希</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">5,600</div></div>
+            <div class="grid-system list-item"><div class="col">12/08</div><div class="col"><b>軒墨</b></div><div class="col">泰國</div><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col price-text">6,000</div></div>
+            <div class="grid-system list-item"><div class="col">12/05</div><div class="col"><b>陽光</b></div><div class="col">泰國</div><div class="col">-</div><div class="col"><span class="pills addon-pill">2S</span></div><div class="col">-</div><div class="col price-text">3,500</div></div>
+        </div>
     </div>
 
-    <div class="footer">離 線 閱 覽 模 式</div>
+    <div class="footer">友 好 分 享 模 式</div>
 </div>
+
+<script>
+    function toggleYear(id, header) {
+        const target = document.getElementById(id);
+        if (target.classList.contains('hidden')) {
+            target.classList.remove('hidden');
+            header.classList.remove('collapsed');
+        } else {
+            target.classList.add('hidden');
+            header.classList.add('collapsed');
+        }
+    }
+</script>
 </body>
 </html>
