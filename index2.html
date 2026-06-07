@@ -22,7 +22,7 @@ body {
 .container{width:100%;max-width:480px;background:var(--card-bg);border-radius:24px;padding:20px 14px;box-shadow:0 8px 30px rgba(0,0,0,0.03);overflow:hidden;}
 
 /* 大標題區塊 */
-header{text-align:center;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;}
+header{text-align:center;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;width:100%;}
 header h1 {
     font-weight: 700;
     letter-spacing: 8px;
@@ -30,22 +30,25 @@ header h1 {
     font-size: 1.25rem;
     color: var(--accent);
     margin: 0 0 8px 0;
+    width: 100%;
+    text-align: center;
 }
 
-/* 🛠️ 完美校正：移除任何可能殘留的間距推移，確保文字與框左右絕對對稱 */
+/* 🛠️ 標籤完美置中校正：清除所有繼承字距造成的右側留白，強制絕對置中 */
 .badge {
     background: var(--addon-bg);
     color: var(--addon-text);
     font-size: 0.65rem;
-    padding: 3px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-weight: bold;
     display: inline-block;
     text-align: center;
-    letter-spacing: 1px !important;  /* 重新給予乾淨獨立的微小字距 */
-    text-indent: 0px !important;     /* 移除任何首行縮排推移 */
-    margin: 0 auto;
+    letter-spacing: 0px !important;  
+    text-indent: 0px !important;     
+    margin: 0 auto !important;
     white-space: nowrap;
+    width: fit-content;
 }
 
 /* 數據儀表板 */
@@ -60,11 +63,19 @@ header h1 {
     font-weight: 700;
 }
 
-/* 🛠️ 完美校正：利用嚴格的 Grid 排版，強迫上下所有輸入框的垂直中心線與外壁絕對對齊 */
+/* 🛠️ 核心對齊校正：將所有輸入框置於同一個大外殼下，透過單一 Grid 強制上下軌道完全垂直對齊 */
 .form-box{background:#faf9f7;border:1px solid var(--line-color);border-radius:16px;padding:14px;margin-bottom:24px;display:flex;flex-direction:column;gap:8px;}
-.form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;}
-.form-row-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;}
-.form-row-1{display:grid;grid-template-columns:1fr;gap:8px;width:100%;}
+.form-grid-main {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    width: 100%;
+}
+
+/* 控制各橫排在 Grid 中的跨欄位置，確保物理寬度與對齊線絕對連貫 */
+.span-2{grid-column: span 2;}
+.span-3{grid-column: span 3;}
+.span-6{grid-column: span 6;}
 
 /* 輸入框全面剛性約束 */
 input,select{
@@ -147,7 +158,7 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
 .list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;}
 
-/* 方案與加值的小膠囊（已放大版） */
+/* 方案與加值的小膠囊 */
 .pills {
     display: inline-flex;
     align-items: center;
@@ -172,8 +183,8 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 @media (min-width:900px) {
     body{padding:30px;}.container{max-width:760px;padding:30px 26px;border-radius:30px;}
     header h1{font-size:1.7rem;letter-spacing:14px;text-indent:14px;}
-    .badge{font-size:0.75rem;padding:4px 14px;letter-spacing:1px !important;} /* 電腦版同步完美居中 */
-    .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}.form-box{padding:22px;margin-bottom:32px;gap:12px;}input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
+    .badge{font-size:0.75rem;padding:5px 16px;} 
+    .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}.form-box{padding:22px;margin-bottom:32px;}.form-grid-main{gap:12px;}input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
 }
 </style>
 </head>
@@ -195,24 +206,20 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         </div>
 
         <div class="form-box">
-            <div class="form-row-3">
-                <input type="date" id="f-date">
-                <input type="text" id="f-name" placeholder="名字">
-                <input type="text" id="f-nat" placeholder="國籍">
-            </div>
-            
-            <div class="form-row-2">
-                <input type="text" id="f-plan" placeholder="方案">
-                <input type="text" id="f-add" placeholder="加值">
-            </div>
-            
-            <div class="form-row-2">
-                <input type="number" id="f-tip" placeholder="小費">
-                <input type="number" id="f-amt" placeholder="金額">
-            </div>
-            
-            <div class="form-row-1">
-                <button class="btn-submit" id="btn-save" onclick="addItem()">新 增 記 錄</button>
+            <div class="form-grid-main">
+                <input type="date" id="f-date" class="span-2">
+                <input type="text" id="f-name" placeholder="名字" class="span-2">
+                <input type="text" id="f-nat" placeholder="國籍" class="span-2">
+                
+                <input type="text" id="f-plan" placeholder="方案" class="span-3">
+                <input type="text" id="f-add" placeholder="加值" class="span-3">
+                
+                <input type="number" id="f-tip" placeholder="小費" class="span-3">
+                <input type="number" id="f-amt" placeholder="金額" class="span-3">
+                
+                <div class="span-6">
+                    <button class="btn-submit" id="btn-save" onclick="addItem()">新 增 記 錄</button>
+                </div>
             </div>
         </div>
 
