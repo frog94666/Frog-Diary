@@ -9,7 +9,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;}
 
-/* 全域字體：完全同步圖1數據版的細緻、輕薄質感 (font-weight: 300/400) */
+/* 全域字體：固定維持圖1數據版的細緻、輕薄質感，確保不跳掉 */
 body {
     background: var(--bg-color);
     color: var(--text-dark);
@@ -22,7 +22,7 @@ body {
 }
 .container{width:100%;max-width:480px;background:var(--card-bg);border-radius:24px;padding:20px 14px;box-shadow:0 8px 30px rgba(0,0,0,0.03);overflow:hidden;}
 
-/* 大標題區塊：同步圖1的輕纖細體 */
+/* 大標題區塊 */
 header h1 {
     text-align: center;
     font-weight: 300;
@@ -33,7 +33,7 @@ header h1 {
     margin: 0 0 20px 0;
 }
 
-/* 數據儀表板：數字同步圖1的細體大字，非粗體 */
+/* 數據儀表板 */
 .summary-box{background:#faf9f7;border-radius:16px;display:flex;margin-bottom:22px;border:1px solid var(--line-color);height:82px;overflow:hidden;}
 .summary-item{flex:1;border-right:1px solid var(--line-color);display:flex;flex-direction:column;justify-content:center;align-items:center;}
 .summary-item:last-child{border-right:none;}
@@ -42,14 +42,14 @@ header h1 {
     font-size: 1.35rem;
     color: var(--accent);
     line-height: 1;
-    font-weight: 400; /* 同步圖1的細體字 */
+    font-weight: 400;
 }
 
-/* 表格欄位對齊與字體大小：完全對照圖1數據版 */
+/* 表格基本版面架構 */
 .table-wrapper{width:100%;}
 .flex-row{display:flex;align-items:center;width:100%;text-align:center;padding:12px 0;min-width:0;}
 
-/* 重新調配寬度比例，讓各欄位文字完全像圖1一樣勻稱不擁擠 */
+/* 精準固定各欄位寬度，不受任何增刪影響 */
 .c-date{width:52px;flex-shrink:0;}
 .c-name{width:58px;flex-shrink:0;font-weight:400;}
 .c-nat{width:48px;flex-shrink:0;}
@@ -58,7 +58,7 @@ header h1 {
     width: 85px; 
     flex-shrink: 0; 
     text-align: right; 
-    font-weight: 600; /* 同步圖1金額微粗的質感 */
+    font-weight: 600; 
     color: var(--accent);
     display: flex;
     align-items: center;
@@ -77,10 +77,10 @@ header h1 {
 .content-container{overflow:hidden;max-height:5000px;opacity:1;transition:max-height .45s ease,opacity .3s ease;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
 
-/* 列表資料字體大小：完全同步圖1 */
+/* 列表資料項目 */
 .list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;font-weight: 400;}
 
-/* 方案與加值的小膠囊：同步圖1的精緻細小尺寸與細字體 */
+/* 方案與加值標籤樣式 */
 .pills {
     display: inline-block;
     font-size: 0.62rem;
@@ -96,7 +96,7 @@ header h1 {
 .loading{text-align:center;padding:30px;font-size:0.8rem;color:var(--text-light);letter-spacing:2px;}
 .footer{text-align:center;margin-top:32px;padding:12px;font-size:0.62rem;color:var(--text-light);opacity:0.4;letter-spacing:4px;}
 
-/* 響應式手機與大螢幕縮放對齊比例 */
+/* 響應式螢幕設定 */
 @media (max-width:480px){
     .container{border-radius:20px;padding:18px 12px;}
     .list-item{font-size:0.7rem;}
@@ -171,10 +171,12 @@ header h1 {
         container.innerHTML = '';
         let spend = 0, addons = 0;
         
+        // 依照日期由新到舊排序
         db.sort((x, y) => new Date(y.d) - new Date(x.d));
         const groups = {};
         
         db.forEach(item => {
+            if (!item || !item.d) return; // 安全過濾：避免空資料造成錯誤跑版
             const year = new Date(item.d).getFullYear() || "其他";
             if (!groups[year]) groups[year] = [];
             groups[year].push(item);
@@ -188,11 +190,13 @@ header h1 {
             let yearHTML = `<div class="year-section"><div class="year-header" onclick="toggleYear('${year}', this)"><div class="year-title">${year} 年度紀錄</div><div class="arrow ${arrowClass}">▼</div></div><div id="cont-${year}" class="content-container ${isCollapsed}">`;
             
             groups[year].forEach(item => {
-                const dateShow = item.d.split('-').slice(1).join('/');
+                const dateShow = item.d ? item.d.split('-').slice(1).join('/') : '-';
                 const addonSpan = item.a ? `<span class="pills addon-pill">${item.a}</span>` : '-';
                 const planSpan = item.s ? `<span class="pills">${item.s}</span>` : '-';
                 const tipShow = item.t > 0 ? item.t.toLocaleString() : '-';
-                yearHTML += `<div class="flex-row list-item"><div class="c-date">${dateShow}</div><div class="c-name">${item.n}</div><div class="c-nat">${item.c || '-'}</div><div class="c-plan">${planSpan}</div><div class="c-add">${addonSpan}</div><div class="c-tip">${tipShow}</div><div class="c-amt">${parseInt(item.p).toLocaleString()}</div></div>`;
+                const amtShow = item.p ? parseInt(item.p).toLocaleString() : '0';
+                
+                yearHTML += `<div class="flex-row list-item"><div class="c-date">${dateShow}</div><div class="c-name">${item.n || '-'}</div><div class="c-nat">${item.c || '-'}</div><div class="c-plan">${planSpan}</div><div class="c-add">${addonSpan}</div><div class="c-tip">${tipShow}</div><div class="c-amt">${amtShow}</div></div>`;
             });
             yearHTML += `</div></div>`;
             container.innerHTML += yearHTML;
@@ -223,7 +227,4 @@ header h1 {
         }
     }
 
-    window.addEventListener('load', loadData);
-</script>
-</body>
-</html>
+    window.
