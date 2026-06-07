@@ -118,4 +118,206 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 .loading{text-align:center;padding:30px;font-size:0.8rem;color:var(--text-light);letter-spacing:2px;}
 .footer{text-align:center;margin-top:32px;padding:12px;font-size:0.62rem;color:var(--text-light);opacity:0.4;letter-spacing:4px;}
 
-@media (max-width:480px){.container{border-radius:20px;padding:18px 12px;}.list-item{font-size:
+@media (max-width:480px){.container{border-radius:20px;padding:18px 12px;}.list-item{font-size:0.7rem;}.c-date{width:42px;}.c-name{width:48px;}.c-nat{width:36px;}.c-amt{width:65px;}}
+@media (min-width:900px) {
+    body{padding:30px;}.container{max-width:760px;padding:30px 26px;border-radius:30px;}header h1{font-size:1.8rem;letter-spacing:12px;}header .badge{font-size:0.75rem;padding:3px 12px;}.summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.6rem;}.form-box{padding:22px;margin-bottom:32px;}input,select{height:46px;font-size:0.95rem;border-radius:12px;}button.btn-submit{height:52px;font-size:1.1rem;border-radius:14px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>蛙 仔 盲 盒 日 記</h1>
+        <span class="badge">數據管理後台</span>
+    </header>
+    
+    <div id="loading-view" class="loading">正在連線雲端資料庫...</div>
+
+    <div id="main-view" style="display:none;">
+        <div class="summary-box">
+            <div class="summary-item"><span>人數</span><b id="sum-count">0</b></div>
+            <div class="summary-item"><span>加值</span><b id="sum-addon">0</b></div>
+            <div class="summary-item"><span>總計</span><b id="sum-spend">0</b></div>
+        </div>
+
+        <div class="form-box">
+            <div class="form-row-3">
+                <input type="date" id="f-date">
+                <input type="text" id="f-name" placeholder="名字">
+                <input type="text" id="f-nat" placeholder="國籍">
+            </div>
+            
+            <div class="form-row-2">
+                <input type="text" id="f-plan" placeholder="方案">
+                <input type="text" id="f-add" placeholder="加值">
+            </div>
+            
+            <div class="form-row-2">
+                <input type="number" id="f-tip" placeholder="小費">
+                <input type="number" id="f-amt" placeholder="金額">
+            </div>
+            
+            <div class="form-row-1">
+                <button class="btn-submit" id="btn-save" onclick="addItem()">新 增 記 錄</button>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="flex-row list-header">
+                <span class="c-date">日期</span><span class="c-name">名字</span><span class="c-nat">國籍</span><span class="c-plan">方案</span><span class="c-add">加值</span><span class="c-tip">小費</span><span class="c-amt">金額</span><span class="c-del"></span>
+            </div>
+            <div id="data-container"></div>
+        </div>
+    </div>
+    <div class="footer">W A Z A I - D I A R Y</div>
+</div>
+
+<script>
+    const CONFIG = {
+        T_PRE: "ghp_", 
+        T_SUF: "2v5vgl44x445cys8djSgxp7kebIkiQ3ZmT0O", 
+        GIST_ID: "ea604c159439173860a439882f615076"
+    };
+
+    let db = [];
+    let collapsedYears = {};
+
+    async function loadData() {
+        try {
+            const fullToken = CONFIG.T_PRE + CONFIG.T_SUF;
+            const res = await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`, {
+                headers: { "Authorization": `token ${fullToken}` }
+            });
+            const data = await res.json();
+            db = JSON.parse(data.files["data.json"].content || "[]");
+            document.getElementById('loading-view').style.display = 'none';
+            document.getElementById('main-view').style.display = 'block';
+            
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('f-date').value = `${yyyy}-${mm}-${dd}`;
+            
+            render();
+        } catch (e) {
+            document.getElementById('loading-view').innerText = "資料庫連線失敗，請檢查金鑰設定。";
+        }
+    }
+
+    async function syncToCloud() {
+        const btn = document.getElementById('btn-save');
+        btn.disabled = true;
+        btn.innerText = "正在同步到雲端...";
+        try {
+            const fullToken = CONFIG.T_PRE + CONFIG.T_SUF;
+            await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`, {
+                method: 'PATCH',
+                headers: { 
+                    "Authorization": `token ${fullToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    files: { "data.json": { content: JSON.stringify(db, null, 2) } }
+                })
+            });
+            render();
+        } catch (e) {
+            alert("雲端同步失敗，請重新整理網頁再試一次！");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "新 增 記 錄";
+        }
+    }
+
+    function addItem() {
+        const d = document.getElementById('f-date').value;
+        const n = document.getElementById('f-name').value.trim();
+        const c = document.getElementById('f-nat').value.trim();
+        const s = document.getElementById('f-plan').value.trim();
+        const a = document.getElementById('f-add').value.trim();
+        const t = parseInt(document.getElementById('f-tip').value) || 0;
+        const p = parseInt(document.getElementById('f-amt').value) || 0;
+
+        if (!d || !n) { alert("請填寫日期與名字！"); return; }
+
+        db.push({ id: Date.now().toString(), d, n, c, s, a, t, p });
+        
+        document.getElementById('f-name').value = '';
+        document.getElementById('f-nat').value = '';
+        document.getElementById('f-plan').value = '';
+        document.getElementById('f-add').value = '';
+        document.getElementById('f-tip').value = '';
+        document.getElementById('f-amt').value = '';
+
+        syncToCloud();
+    }
+
+    function deleteItem(id) {
+        if (!confirm("確定要刪除這筆紀錄嗎？")) return;
+        db = db.filter(item => item.id !== id);
+        syncToCloud();
+    }
+
+    function render() {
+        const container = document.getElementById('data-container');
+        container.innerHTML = '';
+        let spend = 0, addons = 0;
+        
+        db.sort((x, y) => new Date(y.d) - new Date(x.d));
+        const groups = {};
+        
+        db.forEach(item => {
+            const year = new Date(item.d).getFullYear() || "其他";
+            if (!groups[year]) groups[year] = [];
+            groups[year].push(item);
+            spend += (parseInt(item.p || 0) + parseInt(item.t || 0));
+            if(item.a) addons++;
+        });
+
+        Object.keys(groups).sort((a,b)=>b-a).forEach(year => {
+            const isCollapsed = collapsedYears[year] ? 'collapsed' : '';
+            const arrowClass = collapsedYears[year] ? 'rotate-arrow' : '';
+            let yearHTML = `<div class="year-section"><div class="year-header" onclick="toggleYear('${year}', this)"><div class="year-title">${year} 年度紀錄</div><div class="arrow ${arrowClass}">▼</div></div><div id="cont-${year}" class="content-container ${isCollapsed}">`;
+            
+            groups[year].forEach(item => {
+                const dateShow = item.d.split('-').slice(1).join('/');
+                const addonSpan = item.a ? `<span class="pills addon-pill">${item.a}</span>` : '-';
+                const planSpan = item.s ? `<span class="pills">${item.s}</span>` : '-';
+                const tipShow = item.t > 0 ? item.t.toLocaleString() : '-';
+                yearHTML += `<div class="flex-row list-item"><div class="c-date">${dateShow}</div><div class="c-name">${item.n}</div><div class="c-nat">${item.c || '-'}</div><div class="c-plan">${planSpan}</div><div class="c-add">${addonSpan}</div><div class="c-tip">${tipShow}</div><div class="c-amt">${parseInt(item.p).toLocaleString()}</div><div class="c-del"><button class="btn-delete" onclick="deleteItem('${item.id}')">🗑️</button></div></div>`;
+            });
+            yearHTML += `</div></div>`;
+            container.innerHTML += yearHTML;
+        });
+
+        document.getElementById('sum-count').innerText = db.length;
+        document.getElementById('sum-addon').innerText = addons;
+        document.getElementById('sum-spend').innerText = spend.toLocaleString();
+        
+        document.querySelectorAll('.content-container').forEach(c => {
+            c.style.maxHeight = c.classList.contains('collapsed') ? '0px' : c.scrollHeight + 'px';
+        });
+    }
+
+    function toggleYear(year, headerEl) {
+        const content = document.getElementById(`cont-${year}`);
+        const arrow = headerEl.querySelector('.arrow');
+        if (content.classList.contains('collapsed')) {
+            content.classList.remove('collapsed');
+            content.style.maxHeight = content.scrollHeight + 'px';
+            arrow.classList.remove('rotate-arrow');
+            collapsedYears[year] = false;
+        } else {
+            content.style.maxHeight = '0px';
+            content.classList.add('collapsed');
+            arrow.classList.add('rotate-arrow');
+            collapsedYears[year] = true;
+        }
+    }
+
+    window.addEventListener('load', loadData);
+</script>
+</body>
+</html>
