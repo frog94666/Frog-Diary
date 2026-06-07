@@ -19,10 +19,9 @@ header h1{font-weight:300;letter-spacing:6px;font-size:1.2rem;color:var(--accent
 .summary-item span{font-size:0.65rem;color:var(--text-light);margin-bottom:4px;}
 .summary-item b{font-size:1.15rem;color:var(--accent);line-height:1;}
 
-/* 🛠️ 重新設計的完美表單網格 (完全對齊圖2格式) */
 .form-box{background:#faf9f7;border:1px solid var(--line-color);border-radius:16px;padding:14px;margin-bottom:24px;}
-.form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;} /* 第一排：三個等寬格子 */
-.form-row-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;} /* 第二、三排：兩個等寬大格子 */
+.form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;}
+.form-row-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;}
 .form-row-1{display:grid;grid-template-columns:1fr;gap:8px;}
 
 input,select{width:100%;height:38px;border:1px solid var(--line-color);border-radius:10px;padding:0 10px;font-size:0.8rem;color:var(--text-dark);background:#fff;outline:none;transition:border .2s;}
@@ -49,8 +48,11 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 .content-container{overflow:hidden;max-height:5000px;opacity:1;transition:max-height .45s ease,opacity .3s ease;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
 .list-item{border-bottom:1px solid #f7f7f7;font-size:0.7rem;}
-.pills{display:inline-block;font-size:0.55rem;background:var(--pill-bg);color:var(--pill-text);padding:2px 4px;border-radius:4px;white-space:nowrap;}
+
+/* 🛠️ 方案與加值字體放大：直接跟隨整行文字大小 (100%)，外層膠囊微調完美包覆 */
+.pills{display:inline-block;font-size:100%;background:var(--pill-bg);color:var(--pill-text);padding:1px 6px;border-radius:6px;white-space:nowrap;}
 .addon-pill{background:var(--addon-bg);color:var(--addon-text);font-weight:bold;}
+
 .btn-delete{background:none;border:none;color:var(--delete-color);cursor:pointer;font-size:0.85rem;padding:0 4px;opacity:0.6;transition:opacity .2s;}
 .btn-delete:hover{opacity:1;}
 .loading{text-align:center;padding:30px;font-size:0.8rem;color:var(--text-light);letter-spacing:2px;}
@@ -111,7 +113,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 </div>
 
 <script>
-    // ⚙️ 雲端資料庫金鑰設定區（安全障眼法版）
     const CONFIG = {
         T_PRE: "ghp_", 
         T_SUF: "2v5vgl44x445cys8djSgxp7kebIkiQ3ZmT0O", 
