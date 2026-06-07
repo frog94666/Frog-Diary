@@ -34,7 +34,7 @@ header h1 {
     text-align: center;
 }
 
-/* 🛠️ 標籤完美置中校正：清除所有繼承字距造成的右側留白，強制絕對置中 */
+/* 標籤置中校正 */
 .badge {
     background: var(--addon-bg);
     color: var(--addon-text);
@@ -63,38 +63,54 @@ header h1 {
     font-weight: 700;
 }
 
-/* 🛠️ 核心對齊校正：將所有輸入框置於同一個大外殼下，透過單一 Grid 強制上下軌道完全垂直對齊 */
+/* 🛠️ 表單容器：改用一致的縱向等距排列 */
 .form-box{background:#faf9f7;border:1px solid var(--line-color);border-radius:16px;padding:14px;margin-bottom:24px;display:flex;flex-direction:column;gap:8px;}
-.form-grid-main {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
+
+/* 🛠️ 橫排容器：強制使用 Flex，並確保上下兩排的結構、間距設定完全一模一樣 */
+.form-row-flexible {
+    display: flex;
     gap: 8px;
     width: 100%;
 }
-
-/* 控制各橫排在 Grid 中的跨欄位置，確保物理寬度與對齊線絕對連貫 */
-.span-2{grid-column: span 2;}
-.span-3{grid-column: span 3;}
-.span-6{grid-column: span 6;}
-
-/* 輸入框全面剛性約束 */
-input,select{
-    width:100% !important;
-    height:38px;
-    border:1px solid var(--line-color);
-    border-radius:10px;
-    padding:0 6px;
-    font-size:0.8rem;
-    color:var(--text-dark);
-    background:#fff;
-    outline:none;
-    transition:border .2s;
-    font-family:inherit;
-    font-weight:500;
-    text-align: center; 
+.form-row-flexible input, .form-row-flexible select {
+    flex: 1;
+    min-width: 0; /* 剛性阻止任何因原生類型產生的寬度擠壓 */
 }
-input:focus,select:focus{border-color:var(--accent);}
-input::placeholder{color:#ccc;}
+
+/* 🛠️ 抹平輸入框本質差異（核心修正點） */
+input, select {
+    width: 100% !important;
+    height: 38px;
+    border: 1px solid var(--line-color);
+    border-radius: 10px;
+    padding: 0 4px; /* 縮減 padding，避免不同字體撐開內容 */
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    background: #fff;
+    outline: none;
+    transition: border .2s;
+    text-align: center; 
+    
+    /* 強制抹平所有字體與數字外觀的渲染差異 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-variant-numeric: tabular-nums; /* 強制數字等寬 */
+    -webkit-appearance: none;          /* 抹除 Safari/Chrome 預設樣式 */
+    -moz-appearance: none;             /* 抹除 Firefox 預設樣式 */
+    appearance: none;
+}
+
+/* 🛠️ 徹底移除 type="number" 帶來的隱形微調按鈕空間，這正是錯位的罪魁禍首 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox 專用退化成純文字外觀 */
+}
+
+input:focus, select:focus { border-color: var(--accent); }
+input::placeholder { color: #ccc; }
 
 /* 按鈕 */
 button.btn-submit {
@@ -115,6 +131,7 @@ button.btn-submit {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 2px;
 }
 button.btn-submit:hover{background:var(--btn-hover);}
 button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
@@ -184,7 +201,9 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
     body{padding:30px;}.container{max-width:760px;padding:30px 26px;border-radius:30px;}
     header h1{font-size:1.7rem;letter-spacing:14px;text-indent:14px;}
     .badge{font-size:0.75rem;padding:5px 16px;} 
-    .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}.form-box{padding:22px;margin-bottom:32px;}.form-grid-main{gap:12px;}input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
+    .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}.form-box{padding:22px;margin-bottom:32px;}
+    .form-row-flexible{gap:12px;}
+    input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
 }
 </style>
 </head>
@@ -206,21 +225,23 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         </div>
 
         <div class="form-box">
-            <div class="form-grid-main">
-                <input type="date" id="f-date" class="span-2">
-                <input type="text" id="f-name" placeholder="名字" class="span-2">
-                <input type="text" id="f-nat" placeholder="國籍" class="span-2">
-                
-                <input type="text" id="f-plan" placeholder="方案" class="span-3">
-                <input type="text" id="f-add" placeholder="加值" class="span-3">
-                
-                <input type="number" id="f-tip" placeholder="小費" class="span-3">
-                <input type="number" id="f-amt" placeholder="金額" class="span-3">
-                
-                <div class="span-6">
-                    <button class="btn-submit" id="btn-save" onclick="addItem()">新 增 記 錄</button>
-                </div>
+            <div class="form-row-flexible">
+                <input type="date" id="f-date">
+                <input type="text" id="f-name" placeholder="名字">
+                <input type="text" id="f-nat" placeholder="國籍">
             </div>
+            
+            <div class="form-row-flexible">
+                <input type="text" id="f-plan" placeholder="方案">
+                <input type="text" id="f-add" placeholder="加值">
+            </div>
+            
+            <div class="form-row-flexible">
+                <input type="number" id="f-tip" placeholder="小費">
+                <input type="number" id="f-amt" placeholder="金額">
+            </div>
+            
+            <button class="btn-submit" id="btn-save" onclick="addItem()">新 增 記 錄</button>
         </div>
 
         <div class="table-wrapper">
