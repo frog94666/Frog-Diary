@@ -59,19 +59,6 @@ header h1{
     margin:0 0 20px 0;
 }
 
-/* 數據管理模式小標籤 */
-.mode-badge {
-    text-align:center;
-    font-size:0.6rem;
-    color:#fff;
-    background:#e59a9a;
-    width:fit-content;
-    margin:-15px auto 20px auto;
-    padding:2px 8px;
-    border-radius:10px;
-    letter-spacing:1px;
-}
-
 /* 統計看板 */
 .summary-box{
     background:#faf9f7;
@@ -170,7 +157,6 @@ input::placeholder {
     min-width:0;
 }
 
-/* 欄位寬度完全配對你的極簡 UI */
 .c-date{ width:48px; flex-shrink:0; }
 .c-name{ width:58px; flex-shrink:0; font-weight:600; }
 .c-nat{ width:44px; flex-shrink:0; }
@@ -299,8 +285,7 @@ input::placeholder {
 @media (min-width:900px){
     body{ padding:30px; }
     .container{ max-width:760px; padding:30px 26px; border-radius:30px; }
-    header h1{ font-size:1.7rem; letter-spacing:12px; margin-bottom:10px; }
-    .mode-badge { margin-bottom: 28px; font-size: 0.8rem; }
+    header h1{ font-size:1.7rem; letter-spacing:12px; margin-bottom:28px; }
     .summary-box{ height:95px; margin-bottom:28px; }
     .summary-item span{ font-size:0.8rem; }
     .summary-item b{ font-size:1.5rem; }
@@ -325,7 +310,6 @@ input::placeholder {
 
 <div class="container">
     <header><h1>蛙 仔 盲 盒 日 記</h1></header>
-    <div class="mode-badge">數據管理後台</div>
 
     <div class="summary-box">
         <div class="summary-item"><span>人數</span><b id="sum-count">0</b></div>
@@ -366,7 +350,7 @@ input::placeholder {
 
     <div class="footer">
         <span class="btn-link" onclick="exportData()">備份數據</span>
-        <span class="btn-link" onclick="exportData()">匯入數據</span>
+        <span class="btn-link" onclick="importData()">匯入數據</span>
         <p style="margin-top:20px; opacity:0.4; letter-spacing:4px;">W A Z A I - D I A R Y</p>
     </div>
 </div>
@@ -528,6 +512,7 @@ input::placeholder {
         navigator.clipboard.writeText(str).then(() => alert('數據已安全複製到剪貼簿！可以貼到記事本存起來。'));
     }
 
+    // 修復原版誤植為 exportData 的 bug
     function importData() {
         const str = prompt('請貼上您之前備份的數據代碼：');
         if(str) {
