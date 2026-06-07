@@ -51,7 +51,7 @@ header h1 {
     width: fit-content;
 }
 
-/* 數據儀表板 */
+/* 數據儀表板 (已移除加值，改為兩欄 1:1 等分比例) */
 .summary-box{background:#faf9f7;border-radius:16px;display:flex;margin-bottom:22px;border:1px solid var(--line-color);height:82px;overflow:hidden;}
 .summary-item{flex:1;border-right:1px solid var(--line-color);display:flex;flex-direction:column;justify-content:center;align-items:center;}
 .summary-item:last-child{border-right:none;}
@@ -63,7 +63,7 @@ header h1 {
     font-weight: 700;
 }
 
-/* 表格欄位對齊 (因移除了刪除欄位，重新按原本比例微調以確保極致對齊效果) */
+/* 表格欄位對齊 */
 .table-wrapper{width:100%;}
 .flex-row{display:flex;align-items:center;width:100%;text-align:center;padding:12px 0;min-width:0;}
 .c-date{width:45px;flex-shrink:0;}
@@ -100,7 +100,7 @@ header h1 {
 .content-container{overflow:hidden;max-height:5000px;opacity:1;transition:max-height .45s ease,opacity .3s ease;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
 
-/* 歷史列表項目：純瀏覽版移除點擊手指與 hover 變色，保持純淨外觀 */
+/* 歷史列表項目 */
 .list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;}
 
 /* 方案與加值的小膠囊 */
@@ -145,7 +145,6 @@ header h1 {
     <div id="main-view" style="display:none;">
         <div class="summary-box">
             <div class="summary-item"><span>人數</span><b id="sum-count">0</b></div>
-            <div class="summary-item"><span>加值</span><b id="sum-addon">0</b></div>
             <div class="summary-item"><span>總計</span><b id="sum-spend">0</b></div>
         </div>
 
@@ -190,7 +189,7 @@ header h1 {
     function render() {
         const container = document.getElementById('data-container');
         container.innerHTML = '';
-        let spend = 0, addons = 0;
+        let spend = 0;
         
         db.sort((x, y) => new Date(y.d) - new Date(x.d));
         const groups = {};
@@ -200,7 +199,6 @@ header h1 {
             if (!groups[year]) groups[year] = [];
             groups[year].push(item);
             spend += (parseInt(item.p || 0) + parseInt(item.t || 0));
-            if(item.a) addons++;
         });
 
         Object.keys(groups).sort((a,b)=>b-a).forEach(year => {
@@ -230,7 +228,6 @@ header h1 {
         });
 
         document.getElementById('sum-count').innerText = db.length;
-        document.getElementById('sum-addon').innerText = addons;
         document.getElementById('sum-spend').innerText = spend.toLocaleString();
         
         document.querySelectorAll('.content-container').forEach(c => {
