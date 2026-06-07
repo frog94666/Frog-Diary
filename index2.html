@@ -22,17 +22,17 @@ body {
 .container{width:100%;max-width:480px;background:var(--card-bg);border-radius:24px;padding:20px 14px;box-shadow:0 8px 30px rgba(0,0,0,0.03);overflow:hidden;}
 
 /* 大標題區塊 */
-header{text-align:center;margin-bottom:20px;}
+header{text-align:center;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;}
 header h1 {
     font-weight: 700;
     letter-spacing: 8px;
     text-indent: 8px;
     font-size: 1.25rem;
     color: var(--accent);
-    margin: 0 0 6px 0;
+    margin: 0 0 8px 0;
 }
 
-/* 🛠️ 徹底解決：修正字距造成的右邊偏大，確保小標籤與文字左右完美對齊對稱 */
+/* 🛠️ 完美校正：移除任何可能殘留的間距推移，確保文字與框左右絕對對稱 */
 .badge {
     background: var(--addon-bg);
     color: var(--addon-text);
@@ -40,12 +40,12 @@ header h1 {
     padding: 3px 10px;
     border-radius: 20px;
     font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: 0px !important;  /* 拔除大標題延伸下來的字距遺留 */
-    text-indent: 0px !important;     /* 確保完全不偏心 */
+    display: inline-block;
+    text-align: center;
+    letter-spacing: 1px !important;  /* 重新給予乾淨獨立的微小字距 */
+    text-indent: 0px !important;     /* 移除任何首行縮排推移 */
     margin: 0 auto;
+    white-space: nowrap;
 }
 
 /* 數據儀表板 */
@@ -60,14 +60,15 @@ header h1 {
     font-weight: 700;
 }
 
-.form-box{background:#faf9f7;border:1px solid var(--line-color);border-radius:16px;padding:14px;margin-bottom:24px;}
-.form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;}
-.form-row-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;}
-.form-row-1{display:grid;grid-template-columns:1fr;gap:8px;}
+/* 🛠️ 完美校正：利用嚴格的 Grid 排版，強迫上下所有輸入框的垂直中心線與外壁絕對對齊 */
+.form-box{background:#faf9f7;border:1px solid var(--line-color);border-radius:16px;padding:14px;margin-bottom:24px;display:flex;flex-direction:column;gap:8px;}
+.form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;}
+.form-row-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;}
+.form-row-1{display:grid;grid-template-columns:1fr;gap:8px;width:100%;}
 
-/* 輸入框 */
+/* 輸入框全面剛性約束 */
 input,select{
-    width:100%;
+    width:100% !important;
     height:38px;
     border:1px solid var(--line-color);
     border-radius:10px;
@@ -146,16 +147,16 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
 .list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;}
 
-/* 🛠️ 徹底解決：將方案與加值的小膠囊字體放大到 0.8rem，並微調內襯寬度，變得更清晰好讀 */
+/* 方案與加值的小膠囊（已放大版） */
 .pills {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;               /* 大幅放大字體，跟名字一樣清晰 */
+    font-size: 0.8rem;
     font-weight: 700;
     background: var(--pill-bg);
     color: var(--pill-text);
-    padding: 3px 8px;                /* 加寬膠囊，更舒適 */
+    padding: 3px 8px;
     border-radius: 6px;
     white-space: nowrap;
     line-height: 1; 
@@ -171,8 +172,8 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 @media (min-width:900px) {
     body{padding:30px;}.container{max-width:760px;padding:30px 26px;border-radius:30px;}
     header h1{font-size:1.7rem;letter-spacing:14px;text-indent:14px;}
-    .badge{font-size:0.75rem;padding:4px 14px;} /* RWD 電腦版同步加大對齊 */
-    .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}.form-box{padding:22px;margin-bottom:32px;}input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
+    .badge{font-size:0.75rem;padding:4px 14px;letter-spacing:1px !important;} /* 電腦版同步完美居中 */
+    .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}.form-box{padding:22px;margin-bottom:32px;gap:12px;}input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
 }
 </style>
 </head>
