@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>蛙仔盲盒日記 - 數據管理後台</title>
-
+<title>蛙仔盲盒日記 - 數據管理版</title>
 <style>
-:root{--bg-color:#f2f0eb;--card-bg:#ffffff;--accent:#7a6f66;--text-dark:#4a4a4a;--text-light:#9e9e9e;--line-color:#e8e6e1;--pill-bg:#ebe8e2;--pill-text:#8c837a;--addon-bg:#fdf2f2;--addon-text:#e59a9a;--btn-primary:#7a6f66;--btn-hover:#61564e;--delete-color:#e59a9a;}
+:root{--bg-color:#f2f0eb;--card-bg:#ffffff;--accent:#7a6f66;--text-dark:#4a4a4a;--text-light:#9e9e9e;--line-color:#e8e6e1;--pill-bg:#ebe8e2;--pill-text:#8c837a;--addon-bg:#fdf2f2;--addon-text:#e59a9a;--btn-update:#9c8c80;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;}
+
+/* 全域字體：完全同步您最滿意的數據版細緻、優雅質感 */
 body {
     background: var(--bg-color);
     color: var(--text-dark);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-    font-weight: 500;
+    font-weight: 400;
     display: flex;
     justify-content: center;
     padding: 12px;
@@ -21,199 +22,119 @@ body {
 }
 .container{width:100%;max-width:480px;background:var(--card-bg);border-radius:24px;padding:20px 14px;box-shadow:0 8px 30px rgba(0,0,0,0.03);overflow:hidden;}
 
-/* 大標題區塊 */
-header{text-align:center;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;width:100%;}
 header h1 {
-    font-weight: 700;
-    letter-spacing: 8px;
-    text-indent: 8px;
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-indent: 6px;
     font-size: 1.25rem;
     color: var(--accent);
-    margin: 0 0 8px 0;
-    width: 100%;
-    text-align: center;
-}
-
-/* 標籤置中校正 */
-.badge {
-    background: var(--addon-bg);
-    color: var(--addon-text);
-    font-size: 0.65rem;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: bold;
-    display: inline-block;
-    text-align: center;
-    letter-spacing: 0px !important;  
-    text-indent: 0px !important;     
-    margin: 0 auto !important;
-    white-space: nowrap;
-    width: fit-content;
+    margin: 0 0 20px 0;
 }
 
 /* 數據儀表板 */
 .summary-box{background:#faf9f7;border-radius:16px;display:flex;margin-bottom:22px;border:1px solid var(--line-color);height:82px;overflow:hidden;}
 .summary-item{flex:1;border-right:1px solid var(--line-color);display:flex;flex-direction:column;justify-content:center;align-items:center;}
 .summary-item:last-child{border-right:none;}
-.summary-item span{font-size:0.65rem;color:var(--text-light);margin-bottom:4px;font-weight: 700;}
+.summary-item span{font-size:0.65rem;color:var(--text-light);margin-bottom:4px;font-weight: 400;}
 .summary-item b {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     color: var(--accent);
     line-height: 1;
-    font-weight: 700;
+    font-weight: 400;
 }
 
-/* 🛠️ 表單容器：改用一致的縱向等距排列 */
-.form-box{background:#faf9f7;border:1px solid var(--line-color);border-radius:16px;padding:14px;margin-bottom:24px;display:flex;flex-direction:column;gap:8px;}
+/* 輸入表單區塊 (格子的邊緣、文字、對齊完全同步數據版) */
+.form-box { background: #faf9f7; border-radius: 16px; border: 1px solid var(--line-color); padding: 12px; margin-bottom: 22px; }
+.input-group { display: flex; gap: 8px; margin-bottom: 8px; }
+.input-group:last-of-type { margin-bottom: 12px; }
+input, select { flex: 1; width: 100%; height: 38px; background: #ffffff; border: 1px solid var(--line-color); border-radius: 8px; padding: 0 10px; font-size: 0.75rem; color: var(--text-dark); font-family: inherit; outline: none; text-align: center; }
+input::placeholder { color: #c2bfb9; }
 
-/* 🛠️ 橫排容器：強制使用 Flex，並確保上下兩排的結構、間距設定完全一模一樣 */
-.form-row-flexible {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-}
-.form-row-flexible input, .form-row-flexible select {
-    flex: 1;
-    min-width: 0; /* 剛性阻止任何因原生類型產生的寬度擠壓 */
-}
+/* 按鈕樣式：正常狀態與修改狀態 */
+.btn-submit { width: 100%; height: 42px; background: var(--accent); color: #ffffff; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 400; letter-spacing: 4px; text-indent: 4px; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 12px rgba(122,111,102,0.15); }
+.btn-submit.edit-mode { background: var(--btn-update); }
+.cancel-edit { text-align: center; font-size: 0.7rem; color: #e59a9a; margin-top: 8px; cursor: pointer; display: none; }
 
-/* 🛠️ 抹平輸入框本質差異（核心修正點） */
-input, select {
-    width: 100% !important;
-    height: 38px;
-    border: 1px solid var(--line-color);
-    border-radius: 10px;
-    padding: 0 4px; /* 縮減 padding，避免不同字體撐開內容 */
-    font-size: 0.8rem;
-    color: var(--text-dark);
-    background: #fff;
-    outline: none;
-    transition: border .2s;
-    text-align: center; 
-    
-    /* 強制抹平所有字體與數字外觀的渲染差異 */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    font-variant-numeric: tabular-nums; /* 強制數字等寬 */
-    -webkit-appearance: none;          /* 抹除 Safari/Chrome 預設樣式 */
-    -moz-appearance: none;             /* 抹除 Firefox 預設樣式 */
-    appearance: none;
-}
-
-/* 🛠️ 徹底移除 type="number" 帶來的隱形微調按鈕空間，這正是錯位的罪魁禍首 */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-input[type="number"] {
-    -moz-appearance: textfield; /* Firefox 專用退化成純文字外觀 */
-}
-
-input:focus, select:focus { border-color: var(--accent); }
-input::placeholder { color: #ccc; }
-
-/* 按鈕 */
-button.btn-submit {
-    width: 100%;
-    height: 44px;
-    background: var(--btn-primary);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-family: inherit;
-    font-weight: 700; 
-    letter-spacing: 6px; 
-    text-indent: 6px;
-    cursor: pointer;
-    transition: background .2s;
-    box-shadow: 0 4px 12px rgba(122,111,102,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2px;
-}
-button.btn-submit:hover{background:var(--btn-hover);}
-button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
-
-/* 表格欄位對齊 */
+/* 表格欄位對齊與字體大小 */
 .table-wrapper{width:100%;}
 .flex-row{display:flex;align-items:center;width:100%;text-align:center;padding:12px 0;min-width:0;}
-.c-date{width:45px;flex-shrink:0;}
-.c-name{width:52px;flex-shrink:0;font-weight:700;text-align:center;}
-.c-nat{width:40px;flex-shrink:0;}
+
+.c-date{width:52px;flex-shrink:0;}
+.c-name{width:58px;flex-shrink:0;font-weight:400;}
+.c-nat{width:48px;flex-shrink:0;}
 .c-plan,.c-add,.c-tip{flex:1;min-width:0;}
-.c-amt {
-    width: 70px;
-    flex-shrink: 0;
-    text-align: right;
-    font-weight: 700;
+.c-amt{
+    width: 75px; 
+    flex-shrink: 0; 
+    text-align: right; 
+    font-weight: 600; 
     color: var(--accent);
-    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
-.c-del{width:32px;flex-shrink:0;text-align:right;}
+.c-del{width:30px;flex-shrink:0;display:flex;justify-content:center;align-items:center;}
+.btn-del { background: none; border: none; padding: 0; cursor: pointer; font-size: 1rem; opacity: 0.3; transition: opacity 0.2s; }
+.btn-del:hover { opacity: 0.8; }
 
 .list-header{border-bottom:1px solid var(--line-color);padding-bottom:10px;margin-bottom:6px;}
-.list-header span{
-    font-size:0.68rem;
-    color:var(--text-light);
-    font-weight:700;
-}
+.list-header span{font-size:0.65rem;color:var(--text-light);font-weight:400;}
 
 .year-section{margin-bottom:10px;}
-
 .year-header{background:#faf9f7;border-radius:12px;border:1px solid var(--line-color);margin:10px 0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
-.year-title{
-    font-size:0.88rem;
-    font-weight:700; 
-    color:var(--accent);
-    letter-spacing: 0.5px;
-}
+.year-title{font-size:0.88rem;font-weight:400;color:var(--accent);}
 .arrow{font-size:0.7rem;color:var(--text-light);transition:transform .35s ease;}
 .rotate-arrow{transform:rotate(-90deg);}
+
 .content-container{overflow:hidden;max-height:5000px;opacity:1;transition:max-height .45s ease,opacity .3s ease;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
-.list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;}
+
+/* 列表歷史紀錄：點擊可修改 */
+.list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;font-weight: 400;cursor:pointer;transition:background 0.2s;}
+.list-item:hover{background:#faf9f7;}
+.list-item.selected-for-edit { background: #fdfaf2; border-left: 3px solid #e5c19a; }
 
 /* 方案與加值的小膠囊 */
 .pills {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 700;
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 400;
     background: var(--pill-bg);
     color: var(--pill-text);
-    padding: 3px 8px;
-    border-radius: 6px;
+    padding: 1px 5px;
+    border-radius: 4px;
     white-space: nowrap;
-    line-height: 1; 
 }
-.addon-pill{background:var(--addon-bg);color:var(--addon-text);}
+.addon-pill{background:var(--addon-bg);color:var(--addon-text);font-weight:400;}
 
-.btn-delete{background:none;border:none;color:var(--delete-color);cursor:pointer;font-size:0.85rem;padding:0 4px;opacity:0.6;transition:opacity .2s;}
-.btn-delete:hover{opacity:1;}
 .loading{text-align:center;padding:30px;font-size:0.8rem;color:var(--text-light);letter-spacing:2px;}
 .footer{text-align:center;margin-top:32px;padding:12px;font-size:0.62rem;color:var(--text-light);opacity:0.4;letter-spacing:4px;}
 
-@media (max-width:480px){.container{border-radius:20px;padding:18px 12px;}.list-item{font-size:0.7rem;}.c-date{width:42px;}.c-name{width:48px;}.c-nat{width:36px;}.c-amt{width:65px;}}
-@media (min-width:900px) {
+/* 響應式手機與大螢幕縮放比例 */
+@media (max-width:480px){
+    .container{border-radius:20px;padding:18px 12px;}
+    .list-item{font-size:0.7rem;}
+    .c-date{width:48px;}
+    .c-name{width:54px;}
+    .c-nat{width:44px;}
+    .c-amt{width:70px;}
+}
+@media (min-width:900px){
     body{padding:30px;}.container{max-width:760px;padding:30px 26px;border-radius:30px;}
-    header h1{font-size:1.7rem;letter-spacing:14px;text-indent:14px;}
-    .badge{font-size:0.75rem;padding:5px 16px;} 
-    .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}.form-box{padding:22px;margin-bottom:32px;}
-    .form-row-flexible{gap:12px;}
-    input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
+    header h1{font-size:1.7rem;letter-spacing:12px;margin-bottom:28px;}
+    .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.6rem;}
+    .flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.92rem;}
+    .year-header{padding:18px 20px;}.year-title{font-size:1rem;}
+    .c-date{width:80px;}.c-name{width:95px;}.c-nat{width:75px;}.c-amt{width:115px;font-size:0.95rem;}
+    .footer{margin-top:40px;font-size:0.75rem;}
 }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>蛙仔盲盒日記</h1>
-        <span class="badge">數據管理後台</span>
-    </header>
+    <header><h1>蛙 仔 盲 盒 日 記</h1></header>
     
     <div id="loading-view" class="loading">正在連線雲端資料庫...</div>
 
@@ -225,23 +146,21 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         </div>
 
         <div class="form-box">
-            <div class="form-row-flexible">
-                <input type="date" id="f-date">
+            <div class="input-group">
+                <input type="date" id="f-date" value="2026-06-07">
                 <input type="text" id="f-name" placeholder="名字">
                 <input type="text" id="f-nat" placeholder="國籍">
             </div>
-            
-            <div class="form-row-flexible">
+            <div class="input-group">
                 <input type="text" id="f-plan" placeholder="方案">
                 <input type="text" id="f-add" placeholder="加值">
             </div>
-            
-            <div class="form-row-flexible">
+            <div class="input-group">
                 <input type="number" id="f-tip" placeholder="小費">
                 <input type="number" id="f-amt" placeholder="金額">
             </div>
-            
-            <button class="btn-submit" id="btn-save" onclick="addItem()">新 增 記 錄</button>
+            <button id="btn-submit" class="btn-submit" onclick="handleSubmit()">新 增 記 錄</button>
+            <div id="cancel-edit" class="cancel-edit" onclick="exitEditMode()">取消修改，返回新增模式</div>
         </div>
 
         <div class="table-wrapper">
@@ -263,6 +182,7 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 
     let db = [];
     let collapsedYears = {};
+    let editingId = null; // 用來記錄目前正在修改哪一筆資料
 
     async function loadData() {
         try {
@@ -272,73 +192,43 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
             });
             const data = await res.json();
             db = JSON.parse(data.files["data.json"].content || "[]");
+            
+            // 確保每筆歷史資料都有唯一 id 方便修改對應
+            db.forEach((item, index) => {
+                if(!item.id) item.id = 'id_' + Date.now() + '_' + index;
+            });
+
             document.getElementById('loading-view').style.display = 'none';
             document.getElementById('main-view').style.display = 'block';
             
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            document.getElementById('f-date').value = `${yyyy}-${mm}-${dd}`;
-            
+            // 設定今日日期為預設值
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('f-date').value = today;
+
             render();
         } catch (e) {
-            document.getElementById('loading-view').innerText = "資料庫連線失敗，請檢查金鑰設定。";
+            document.getElementById('loading-view').innerText = "資料庫連線失敗，請檢查金鑰。";
         }
     }
 
-    async function syncToCloud() {
-        const btn = document.getElementById('btn-save');
-        btn.disabled = true;
-        btn.innerText = "正在同步到雲端...";
+    async function saveToCloud() {
+        document.getElementById('btn-submit').innerText = "雲端同步中...";
+        document.getElementById('btn-submit').disabled = true;
         try {
             const fullToken = CONFIG.T_PRE + CONFIG.T_SUF;
             await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`, {
                 method: 'PATCH',
-                headers: { 
-                    "Authorization": `token ${fullToken}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    files: { "data.json": { content: JSON.stringify(db, null, 2) } }
-                })
+                headers: { "Authorization": `token ${fullToken}`, "Content-Type": "application/json" },
+                body: JSON.stringify({ files: { "data.json": { content: JSON.stringify(db, null, 2) } } })
             });
+            exitEditMode();
             render();
         } catch (e) {
-            alert("雲端同步失敗，請重新整理網頁再試一次！");
+            alert("雲端同步失敗，請重試！");
         } finally {
-            btn.disabled = false;
-            btn.innerText = "新 增 記 錄";
+            document.getElementById('btn-submit').disabled = false;
+            updateButtonUI();
         }
-    }
-
-    function addItem() {
-        const d = document.getElementById('f-date').value;
-        const n = document.getElementById('f-name').value.trim();
-        const c = document.getElementById('f-nat').value.trim();
-        const s = document.getElementById('f-plan').value.trim();
-        const a = document.getElementById('f-add').value.trim();
-        const t = parseInt(document.getElementById('f-tip').value) || 0;
-        const p = parseInt(document.getElementById('f-amt').value) || 0;
-
-        if (!d || !n) { alert("請填寫日期與名字！"); return; }
-
-        db.push({ id: Date.now().toString(), d, n, c, s, a, t, p });
-        
-        document.getElementById('f-name').value = '';
-        document.getElementById('f-nat').value = '';
-        document.getElementById('f-plan').value = '';
-        document.getElementById('f-add').value = '';
-        document.getElementById('f-tip').value = '';
-        document.getElementById('f-amt').value = '';
-
-        syncToCloud();
-    }
-
-    function deleteItem(id) {
-        if (!confirm("確定要刪除這筆紀錄嗎？")) return;
-        db = db.filter(item => item.id !== id);
-        syncToCloud();
     }
 
     function render() {
@@ -367,7 +257,21 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
                 const addonSpan = item.a ? `<span class="pills addon-pill">${item.a}</span>` : '-';
                 const planSpan = item.s ? `<span class="pills">${item.s}</span>` : '-';
                 const tipShow = item.t > 0 ? item.t.toLocaleString() : '-';
-                yearHTML += `<div class="flex-row list-item"><div class="c-date">${dateShow}</div><div class="c-name">${item.n}</div><div class="c-nat">${item.c || '-'}</div><div class="c-plan">${planSpan}</div><div class="c-add">${addonSpan}</div><div class="c-tip">${tipShow}</div><div class="c-amt">${parseInt(item.p).toLocaleString()}</div><div class="c-del"><button class="btn-delete" onclick="deleteItem('${item.id}')">🗑️</button></div></div>`;
+                const isSelected = item.id === editingId ? 'selected-for-edit' : '';
+                
+                yearHTML += `
+                <div class="flex-row list-item ${isSelected}" onclick="enterEditMode('${item.id}')">
+                    <div class="c-date">${dateShow}</div>
+                    <div class="c-name">${item.n}</div>
+                    <div class="c-nat">${item.c || '-'}</div>
+                    <div class="c-plan">${planSpan}</div>
+                    <div class="c-add">${addonSpan}</div>
+                    <div class="c-tip">${tipShow}</div>
+                    <div class="c-amt">${parseInt(item.p || 0).toLocaleString()}</div>
+                    <div class="c-del" onclick="event.stopPropagation(); handleDelete('${item.id}')">
+                        <button class="btn-del">🗑️</button>
+                    </div>
+                </div>`;
             });
             yearHTML += `</div></div>`;
             container.innerHTML += yearHTML;
@@ -380,6 +284,98 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         document.querySelectorAll('.content-container').forEach(c => {
             c.style.maxHeight = c.classList.contains('collapsed') ? '0px' : c.scrollHeight + 'px';
         });
+    }
+
+    // 【核心修改功能 1】：點擊下方任意資料列，內容自動填回上方格子中
+    function enterEditMode(id) {
+        const item = db.find(x => x.id === id);
+        if (!item) return;
+
+        editingId = id;
+        document.getElementById('f-date').value = item.d;
+        document.getElementById('f-name').value = item.n;
+        document.getElementById('f-nat').value = item.c || '';
+        document.getElementById('f-plan').value = item.s || '';
+        document.getElementById('f-add').value = item.a || '';
+        document.getElementById('f-tip').value = item.t || '';
+        document.getElementById('f-amt').value = item.p || '';
+
+        updateButtonUI();
+        render(); // 刷新底色
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // 平滑捲動到最上方方便修改
+    }
+
+    // 【核心修改功能 2】：結束修改模式，清空輸入框，按鈕回歸原本的新增狀態
+    function exitEditMode() {
+        editingId = null;
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('f-date').value = today;
+        document.getElementById('f-name').value = '';
+        document.getElementById('f-nat').value = '';
+        document.getElementById('f-plan').value = '';
+        document.getElementById('f-add').value = '';
+        document.getElementById('f-tip').value = '';
+        document.getElementById('f-amt').value = '';
+        updateButtonUI();
+        render();
+    }
+
+    function updateButtonUI() {
+        const btn = document.getElementById('btn-submit');
+        const cancelBtn = document.getElementById('cancel-edit');
+        if (editingId) {
+            btn.innerText = "更 新 記 錄";
+            btn.classList.add('edit-mode');
+            cancelBtn.style.display = 'block';
+        } else {
+            btn.innerText = "新 增 記 錄";
+            btn.classList.remove('edit-mode');
+            cancelBtn.style.display = 'none';
+        }
+    }
+
+    // 當點擊大按鈕時，自動判斷是「新增」還是「更新修改後的舊資料」
+    function handleSubmit() {
+        const date = document.getElementById('f-date').value;
+        const name = document.getElementById('f-name').value.trim();
+        const nat = document.getElementById('f-nat').value.trim();
+        const plan = document.getElementById('f-plan').value.trim();
+        const add = document.getElementById('f-add').value.trim();
+        const tip = parseInt(document.getElementById('f-tip').value) || 0;
+        const amt = parseInt(document.getElementById('f-amt').value) || 0;
+
+        if (!name) { alert("請輸入名字"); return; }
+
+        if (editingId) {
+            // 更新原本的舊資料
+            const index = db.findIndex(x => x.id === editingId);
+            if (index !== -1) {
+                db[index].d = date;
+                db[index].n = name;
+                db[index].c = nat;
+                db[index].s = plan;
+                db[index].a = add;
+                db[index].t = tip;
+                db[index].p = amt;
+            }
+        } else {
+            // 新增一筆全新記錄
+            const newItem = {
+                id: 'id_' + Date.now(),
+                d: date, n: name, c: nat, s: plan, a: add, t: tip, p: amt
+            };
+            db.push(newItem);
+        }
+
+        saveToCloud();
+    }
+
+    function handleDelete(id) {
+        if (confirm("確定要刪除這筆紀錄嗎？")) {
+            db = db.filter(x => x.id !== id);
+            if (editingId === id) exitEditMode();
+            saveToCloud();
+        }
     }
 
     function toggleYear(year, headerEl) {
