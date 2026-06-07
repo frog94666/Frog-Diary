@@ -51,7 +51,7 @@ header h1 {
     width: fit-content;
 }
 
-/* 數據儀表板 */
+/* 數據儀表板 (已移除加值，改為兩欄 1:1 等分比例) */
 .summary-box{background:#faf9f7;border-radius:16px;display:flex;margin-bottom:22px;border:1px solid var(--line-color);height:82px;overflow:hidden;}
 .summary-item{flex:1;border-right:1px solid var(--line-color);display:flex;flex-direction:column;justify-content:center;align-items:center;}
 .summary-item:last-child{border-right:none;}
@@ -63,10 +63,10 @@ header h1 {
     font-weight: 700;
 }
 
-/* 🛠️ 表單容器：改用一致的縱向等距排列 */
+/* 表單容器 */
 .form-box{background:#faf9f7;border:1px solid var(--line-color);border-radius:16px;padding:14px;margin-bottom:24px;display:flex;flex-direction:column;gap:8px;}
 
-/* 🛠️ 橫排容器：強制使用 Flex，並確保上下兩排的結構、間距設定完全一模一樣 */
+/* 橫排容器 */
 .form-row-flexible {
     display: flex;
     gap: 8px;
@@ -74,39 +74,35 @@ header h1 {
 }
 .form-row-flexible input, .form-row-flexible select {
     flex: 1;
-    min-width: 0; /* 剛性阻止任何因原生類型產生的寬度擠壓 */
+    min-width: 0;
 }
 
-/* 🛠️ 抹平輸入框本質差異（核心修正點） */
 input, select {
     width: 100% !important;
     height: 38px;
     border: 1px solid var(--line-color);
     border-radius: 10px;
-    padding: 0 4px; /* 縮減 padding，避免不同字體撐開內容 */
+    padding: 0 4px;
     font-size: 0.8rem;
     color: var(--text-dark);
     background: #fff;
     outline: none;
     transition: border .2s;
     text-align: center; 
-    
-    /* 強制抹平所有字體與數字外觀的渲染差異 */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    font-variant-numeric: tabular-nums; /* 強制數字等寬 */
-    -webkit-appearance: none;          /* 抹除 Safari/Chrome 預設樣式 */
-    -moz-appearance: none;             /* 抹除 Firefox 預設樣式 */
+    font-variant-numeric: tabular-nums;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
 }
 
-/* 🛠️ 徹底移除 type="number" 帶來的隱形微調按鈕空間，這正是錯位的罪魁禍首 */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 input[type="number"] {
-    -moz-appearance: textfield; /* Firefox 專用退化成純文字外觀 */
+    -moz-appearance: textfield;
 }
 
 input:focus, select:focus { border-color: var(--accent); }
@@ -134,7 +130,7 @@ button.btn-submit {
     margin-top: 2px;
 }
 button.btn-submit:hover{background:var(--btn-hover);}
-button.btn-submit.edit-mode { background: var(--btn-update); } /* 修改狀態的顏色 */
+button.btn-submit.edit-mode { background: var(--btn-update); }
 button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 
 .cancel-edit { text-align: center; font-size: 0.72rem; font-weight: 700; color: #e59a9a; margin-top: 4px; cursor: pointer; display: none; }
@@ -177,7 +173,7 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 .content-container{overflow:hidden;max-height:5000px;opacity:1;transition:max-height .45s ease,opacity .3s ease;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
 
-/* 歷史列表項目：滑過與選中效果 */
+/* 歷史列表項目 */
 .list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;cursor:pointer;transition:background 0.2s;}
 .list-item:hover{background:#faf9f7;}
 .list-item.selected-for-edit { background: #fdfaf2; border-left: 3px solid #e5c19a; }
@@ -227,7 +223,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
     <div id="main-view" style="display:none;">
         <div class="summary-box">
             <div class="summary-item"><span>人數</span><b id="sum-count">0</b></div>
-            <div class="summary-item"><span>加值</span><b id="sum-addon">0</b></div>
             <div class="summary-item"><span>總計</span><b id="sum-spend">0</b></div>
         </div>
 
@@ -271,7 +266,7 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 
     let db = [];
     let collapsedYears = {};
-    let editingId = null; // 用來儲存目前正在修改哪一筆紀錄
+    let editingId = null;
 
     async function loadData() {
         try {
@@ -282,7 +277,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
             const data = await res.json();
             db = JSON.parse(data.files["data.json"].content || "[]");
             
-            // 確保歷史舊資料都有補上 id 方便精準修改
             db.forEach((item, index) => {
                 if(!item.id) item.id = 'id_' + Date.now() + '_' + index;
             });
@@ -322,7 +316,7 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
                     files: { "data.json": { content: JSON.stringify(db, null, 2) } }
                 })
             });
-            exitEditMode(); // 存檔完成後自動退出修改狀態
+            exitEditMode();
             render();
         } catch (e) {
             alert("雲端同步失敗，請重新整理網頁再試一次！");
@@ -332,7 +326,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         }
     }
 
-    // 整合新增與更新的統一入口
     function handleSubmit() {
         const d = document.getElementById('f-date').value;
         const n = document.getElementById('f-name').value.trim();
@@ -345,7 +338,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         if (!d || !n) { alert("請填寫日期與名字！"); return; }
 
         if (editingId) {
-            // 更新模式
             const index = db.findIndex(item => item.id === editingId);
             if (index !== -1) {
                 db[index].d = d;
@@ -357,14 +349,12 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
                 db[index].p = p;
             }
         } else {
-            // 全新新增模式
             db.push({ id: Date.now().toString(), d, n, c, s, a, t, p });
         }
 
         syncToCloud();
     }
 
-    // 點擊歷史紀錄：將資料帶回上方的格子中
     function enterEditMode(id) {
         const item = db.find(x => x.id === id);
         if (!item) return;
@@ -379,11 +369,10 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         document.getElementById('f-amt').value = item.p || '';
 
         updateButtonUI();
-        render(); // 重新渲染列表以套用選取狀態的底色
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // 自動平滑捲動到上方格子
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 離開修改模式：清空所有格子恢復初始狀態
     function exitEditMode() {
         editingId = null;
         resetDateToToday();
@@ -397,7 +386,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         render();
     }
 
-    // 切換按鈕的文字與樣式
     function updateButtonUI() {
         const btn = document.getElementById('btn-save');
         const cancelBtn = document.getElementById('cancel-edit');
@@ -422,7 +410,7 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
     function render() {
         const container = document.getElementById('data-container');
         container.innerHTML = '';
-        let spend = 0, addons = 0;
+        let spend = 0;
         
         db.sort((x, y) => new Date(y.d) - new Date(x.d));
         const groups = {};
@@ -432,7 +420,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
             if (!groups[year]) groups[year] = [];
             groups[year].push(item);
             spend += (parseInt(item.p || 0) + parseInt(item.t || 0));
-            if(item.a) addons++;
         });
 
         Object.keys(groups).sort((a,b)=>b-a).forEach(year => {
@@ -466,7 +453,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
         });
 
         document.getElementById('sum-count').innerText = db.length;
-        document.getElementById('sum-addon').innerText = addons;
         document.getElementById('sum-spend').innerText = spend.toLocaleString();
         
         document.querySelectorAll('.content-container').forEach(c => {
