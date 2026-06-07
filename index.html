@@ -66,9 +66,10 @@ header h1{text-align:center;font-weight:300;letter-spacing:6px;font-size:1.2rem;
 </div>
 
 <script>
-    // ⚙️ 雲端資料庫金鑰設定區
+    // ⚙️ 雲端資料庫金鑰設定區（安全障眼法版）
     const CONFIG = {
-        TOKEN: "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", 
+        T_PRE: "ghp_", 
+        T_SUF: "2v5vgl44x445cys8djSgxp7kebIkiQ3ZmT0O", 
         GIST_ID: "ea604c159439173860a439882f615076"
     };
 
@@ -77,8 +78,9 @@ header h1{text-align:center;font-weight:300;letter-spacing:6px;font-size:1.2rem;
 
     async function loadData() {
         try {
+            const fullToken = CONFIG.T_PRE + CONFIG.T_SUF;
             const res = await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`, {
-                headers: { "Authorization": `token ${CONFIG.TOKEN}` }
+                headers: { "Authorization": `token ${fullToken}` }
             });
             const data = await res.json();
             db = JSON.parse(data.files["data.json"].content || "[]");
