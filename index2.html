@@ -107,33 +107,39 @@
             gap: 10px;
         }
 
-        /* 橫排容器：改用網格系統，徹底解決不同類型輸入框的像素對齊誤差 */
+        /* 橫排 Flexbox 容器 */
         .form-row-flexible {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            display: flex;
             width: 100%;
+            gap: 10px; /* 統一欄位之間的間距 */
         }
 
-        /* 第一排（日期、名字、國籍）維持三欄等分 */
-        .form-box .form-row-flexible:first-child {
-            grid-template-columns: repeat(3, 1fr);
+        /* 第一排：三等分 (33.33%) */
+        .form-row-flexible.row-3 > * {
+            flex: 1;
+            width: 0; /* 確保在 Flex 彈性下等分 */
         }
 
-        /* 輸入框與選擇框基礎樣式抹平 */
+        /* 第二排與第三排：二等分 (50%) */
+        .form-row-flexible.row-2 > * {
+            flex: 1;
+            width: 0; /* 確保在 Flex 彈性下等分 */
+        }
+
+        /* 輸入框與選擇框基礎樣式 */
         input, select {
-            width: 100% !important;
+            display: block;
             height: 38px;
             border: 1px solid var(--line-color);
             border-radius: 10px;
-            padding: 0 4px;
+            padding: 0 10px;
             font-size: 0.85rem;
             color: var(--text-dark);
             background: #fff;
             outline: none;
             transition: border .2s;
             text-align: center;
-            margin: 0; /* 清除所有隱形外邊距 */
+            margin: 0; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
             font-variant-numeric: tabular-nums;
             -webkit-appearance: none;
@@ -145,10 +151,11 @@
             border-color: var(--text-light);
         }
 
-        /* 針對日期欄位優化 */
+        /* 日期欄位樣式優化 */
         input[type="date"] {
             position: relative;
-            padding-right: 8px;
+            padding-right: 10px;
+            text-align: center;
         }
         input[type="date"]::-webkit-calendar-picker-indicator {
             position: absolute;
@@ -156,18 +163,19 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
-        /* 針對下拉選單加上精緻的小箭頭 */
+        /* 下拉選單小箭頭 */
         select {
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%236e655f' d='M0,0 L5,5 L10,0 Z'/></svg>");
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23baaf9a' d='M0,0 L5,5 L10,0 Z'/></svg>");
             background-repeat: no-repeat;
-            background-position: right 10px center;
-            padding-right: 24px;
+            background-position: right 12px center;
+            padding-right: 28px;
+            text-align-last: center; /* 確保下拉文字置中 */
         }
 
-        /* 徹底移除數字欄位的上下調整小箭頭 */
+        /* 移除數字欄位小箭頭 */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -175,10 +183,9 @@
         }
         input[type="number"] {
             -moz-appearance: textfield;
-            padding: 0 4px !important;
         }
 
-        /* Placeholder 顏色優化 */
+        /* Placeholder 顏色 */
         ::placeholder {
             color: #ccc;
             font-size: 0.85rem;
@@ -234,7 +241,7 @@
             vertical-align: middle;
         }
 
-        /* 標籤小貼紙樣式 */
+        /* 標籤小貼紙 */
         .badge-pill {
             display: inline-block;
             padding: 2px 8px;
@@ -260,9 +267,9 @@
             cursor: pointer;
             padding: 4px;
             display: inline-flex;
-            align-items: middle;
+            align-items: center;
             justify-content: center;
-            opacity: 0.5;
+            opacity: 0.4;
             transition: opacity 0.2s;
         }
 
@@ -299,13 +306,13 @@
     </div>
 
     <div class="form-box">
-        <div class="form-row-flexible">
+        <div class="form-row-flexible row-3">
             <input type="date" id="input-date">
             <input type="text" id="input-name" placeholder="名字">
             <input type="text" id="input-country" placeholder="國籍">
         </div>
         
-        <div class="form-row-flexible">
+        <div class="form-row-flexible row-2">
             <select id="input-plan">
                 <option value="" disabled selected hidden>方案</option>
                 <option value="5S">5S</option>
@@ -320,7 +327,7 @@
             </select>
         </div>
 
-        <div class="form-row-flexible">
+        <div class="form-row-flexible row-2">
             <input type="number" id="input-tip" placeholder="小費">
             <input type="number" id="input-amount" placeholder="金額">
         </div>
