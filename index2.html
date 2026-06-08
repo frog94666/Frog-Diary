@@ -7,7 +7,7 @@
 
 <style>
 :root{--bg-color:#f2f0eb;--card-bg:#ffffff;--accent:#7a6f66;--text-dark:#4a4a4a;--text-light:#9e9e9e;--line-color:#e8e6e1;--pill-bg:#ebe8e2;--pill-text:#8c837a;--addon-bg:#fdf2f2;--addon-text:#e59a9a;--btn-primary:#7a6f66;--btn-hover:#61564e;--delete-color:#e59a9a;--btn-update:#9c8c80;}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+*{box-shadow:none;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;}
 body {
     background: var(--bg-color);
@@ -133,20 +133,22 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 
 .cancel-edit { text-align: center; font-size: 0.72rem; font-weight: 700; color: #e59a9a; margin-top: 4px; cursor: pointer; display: none; }
 
-/* 表格欄位對齊 */
+/* 表格欄位對齊 (電腦版與標準版基礎) */
 .table-wrapper{width:100%;}
 .flex-row{display:flex;align-items:center;width:100%;text-align:center;padding:12px 0;min-width:0;}
-.c-date{width:45px;flex-shrink:0;}
-.c-name{width:52px;flex-shrink:0;font-weight:700;text-align:center;}
-.c-nat{width:40px;flex-shrink:0;}
-.c-plan,.c-add,.c-tip{flex:1;min-width:0;}
+.c-date{width:55px;flex-shrink:0;}
+.c-name{width:65px;flex-shrink:0;font-weight:700;text-align:center;}
+.c-nat{width:50px;flex-shrink:0;}
+.c-plan{width:100px;flex-shrink:0;}
+.c-add{width:65px;flex-shrink:0;}
+.c-tip{width:55px;flex-shrink:0;}
 .c-amt {
-    width: 70px;
-    flex-shrink: 0;
+    flex: 1;
     text-align: right;
     font-weight: 700;
     color: var(--accent);
     font-size: 0.8rem;
+    padding-right: 4px;
 }
 .c-del{width:32px;flex-shrink:0;text-align:right;}
 
@@ -158,14 +160,8 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 }
 
 .year-section{margin-bottom:10px;}
-
 .year-header{background:#faf9f7;border-radius:12px;border:1px solid var(--line-color);margin:10px 0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
-.year-title{
-    font-size:0.88rem;
-    font-weight:700; 
-    color:var(--accent);
-    letter-spacing: 0.5px;
-}
+.year-title{font-size:0.88rem;font-weight:700;color:var(--accent);letter-spacing:0.5px;}
 .arrow{font-size:0.7rem;color:var(--text-light);transition:transform .35s ease;}
 .rotate-arrow{transform:rotate(-90deg);}
 .content-container{overflow:hidden;max-height:5000px;opacity:1;transition:max-height .45s ease,opacity .3s ease;}
@@ -180,11 +176,11 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     background: var(--pill-bg);
     color: var(--pill-text);
-    padding: 3px 8px;
+    padding: 3px 6px;
     border-radius: 6px;
     white-space: nowrap;
     line-height: 1; 
@@ -200,14 +196,53 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 .logout-box { text-align: center; margin-top: 10px; }
 .btn-logout { background: none; border: none; color: var(--text-light); font-size: 0.65rem; text-decoration: underline; cursor: pointer; font-weight: bold; }
 
-@media (max-width:480px){.container{border-radius:20px;padding:18px 12px;}.list-item{font-size:0.7rem;}.c-date{width:42px;}.c-name{width:48px;}.c-nat{width:36px;}.c-amt{width:65px;}}
+/* 📱 手機版 RWD 微調 (精準防變形) */
+@media (max-width:480px){
+    .container{border-radius:20px;padding:18px 12px;}
+    
+    /* 表單橫排空間不夠時自動安全換行，絕不擠壓 */
+    .form-box .form-row-flexible { flex-wrap: wrap; gap: 8px; }
+    .form-box .form-row-flexible:nth-child(1) #f-date { flex: 1.3; min-width: 110px; }
+    .form-box .form-row-flexible:nth-child(1) #f-name { flex: 1; min-width: 75px; }
+    .form-box .form-row-flexible:nth-child(1) #f-nat { flex: 1; min-width: 75px; }
+    
+    /* 歷史列表與標頭寬度重新調校 */
+    .list-item{font-size:0.7rem;}
+    .c-date{width:42px;}
+    .c-name{width:48px;}
+    .c-nat{width:36px;}
+    .c-plan{width:70px;}
+    .c-add{width:40px;}
+    .c-tip{width:35px;}
+    .c-amt{flex:1; font-size:0.7rem; padding-right:2px;}
+    .c-del{width:24px;}
+    .pills { font-size: 0.65rem; padding: 2px 4px; }
+}
+
+/* 🖥️ 原本的電腦版格式，原封不動完美保留並微調適配大尺寸 */
 @media (min-width:900px) {
-    body{padding:30px;}.container{max-width:760px;padding:30px 26px;border-radius:30px;}
+    body{padding:30px;}.container{max-width:850px;padding:30px 26px;border-radius:30px;}
     header h1{font-size:1.7rem;letter-spacing:14px;text-indent:14px;}
     .badge{font-size:0.75rem;padding:5px 16px;} 
     .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}.form-box{padding:22px;margin-bottom:32px;}
     .form-row-flexible{gap:12px;}
-    input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}.flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:85px;}.c-nat{width:65px;}.c-amt{width:110px;font-size:0.95rem;}.c-del{width:45px;}.btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
+    input,select{height:46px;font-size:0.95rem;border-radius:12px;padding:0 8px;}
+    button.btn-submit{height:52px;font-size:1.05rem;border-radius:14px;letter-spacing:10px;text-indent:10px;}
+    .flex-row{padding:18px 0;}
+    .list-header span{font-size:0.82rem;}
+    .list-item{font-size:0.95rem;}
+    .year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}
+    
+    .c-date{width:80px;}
+    .c-name{width:90px;}
+    .c-nat{width:70px;}
+    .c-plan{width:150px;}
+    .c-add{width:100px;}
+    .c-tip{width:80px;}
+    .c-amt{flex:1; font-size:0.95rem; padding-right:10px;}
+    .c-del{width:45px;}
+    .btn-delete{font-size:1.1rem;}.footer{margin-top:40px;font-size:0.75rem;}
+    .pills { font-size: 0.8rem; padding: 4px 8px; }
 }
 </style>
 </head>
@@ -263,10 +298,9 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 </div>
 
 <script>
-    // ⚙️ 在這裡設定你想要的日常密碼！
     const SECURITY_SETTING = {
-        CUSTOM_PASSWORD: "Aa810502", // 👈 把這裡的中文字改成你自己要的日常密碼 (例如: "1234")
-        REAL_TOKEN_SUF: "2v5vgl44x445cys8djSgxp7kebIkiQ3ZmT0O" // 真正的 GitHub 金鑰後半段
+        CUSTOM_PASSWORD: "Aa810502", 
+        REAL_TOKEN_SUF: "2v5vgl44x445cys8djSgxp7kebIkiQ3ZmT0O" 
     };
 
     const CONFIG = {
@@ -279,13 +313,10 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
     let editingId = null;
     let isVerified = false;
 
-    // 取得完整金鑰的函數
     function getFullToken() {
-        // 先檢查瀏覽器有沒有記錄「密碼驗證成功」的標記
         let savedPass = localStorage.getItem('wazai_custom_pass') || "";
         
         if (savedPass !== SECURITY_SETTING.CUSTOM_PASSWORD) {
-            // 沒有記住，或者密碼不對，彈出視窗詢問
             const userInput = prompt("🔒 請輸入管理員自訂密碼：");
             if (userInput && userInput.trim() === SECURITY_SETTING.CUSTOM_PASSWORD) {
                 localStorage.setItem('wazai_custom_pass', SECURITY_SETTING.CUSTOM_PASSWORD);
@@ -300,7 +331,6 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
             isVerified = true;
         }
 
-        // 驗證成功，拼湊出真正的 GitHub Token 去撈資料
         return CONFIG.T_PRE + SECURITY_SETTING.REAL_TOKEN_SUF;
     }
 
