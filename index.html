@@ -21,7 +21,6 @@ body {
 }
 .container{width:100%;max-width:480px;background:var(--card-bg);border-radius:24px;padding:20px 14px;box-shadow:0 8px 30px rgba(0,0,0,0.03);overflow:hidden;}
 
-/* 大標題區塊 */
 header{text-align:center;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;width:100%;}
 header h1 {
     font-weight: 700;
@@ -34,7 +33,6 @@ header h1 {
     text-align: center;
 }
 
-/* 標籤置中校正 */
 .badge {
     background: var(--addon-bg);
     color: var(--addon-text);
@@ -51,7 +49,7 @@ header h1 {
     width: fit-content;
 }
 
-/* 數據儀表板 (已移除加值，改為兩欄 1:1 等分比例) */
+/* 數據儀表板 */
 .summary-box{background:#faf9f7;border-radius:16px;display:flex;margin-bottom:22px;border:1px solid var(--line-color);height:82px;overflow:hidden;}
 .summary-item{flex:1;border-right:1px solid var(--line-color);display:flex;flex-direction:column;justify-content:center;align-items:center;}
 .summary-item:last-child{border-right:none;}
@@ -63,20 +61,22 @@ header h1 {
     font-weight: 700;
 }
 
-/* 表格欄位對齊 */
+/* 表格欄位對齊 (基準比例) */
 .table-wrapper{width:100%;}
 .flex-row{display:flex;align-items:center;width:100%;text-align:center;padding:12px 0;min-width:0;}
-.c-date{width:45px;flex-shrink:0;}
-.c-name{width:55px;flex-shrink:0;font-weight:700;text-align:center;}
-.c-nat{width:40px;flex-shrink:0;}
-.c-plan,.c-add,.c-tip{flex:1;min-width:0;}
+.c-date{width:55px;flex-shrink:0;}
+.c-name{width:65px;flex-shrink:0;font-weight:700;text-align:center;}
+.c-nat{width:50px;flex-shrink:0;}
+.c-plan{width:100px;flex-shrink:0;}
+.c-add{width:65px;flex-shrink:0;}
+.c-tip{width:55px;flex-shrink:0;}
 .c-amt {
-    width: 75px;
-    flex-shrink: 0;
+    flex: 1;
     text-align: right;
     font-weight: 700;
     color: var(--accent);
     font-size: 0.8rem;
+    padding-right: 4px;
 }
 
 .list-header{border-bottom:1px solid var(--line-color);padding-bottom:10px;margin-bottom:6px;}
@@ -87,32 +87,24 @@ header h1 {
 }
 
 .year-section{margin-bottom:10px;}
-
 .year-header{background:#faf9f7;border-radius:12px;border:1px solid var(--line-color);margin:10px 0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
-.year-title{
-    font-size:0.88rem;
-    font-weight:700; 
-    color:var(--accent);
-    letter-spacing: 0.5px;
-}
+.year-title{font-size:0.88rem;font-weight:700;color:var(--accent);letter-spacing:0.5px;}
 .arrow{font-size:0.7rem;color:var(--text-light);transition:transform .35s ease;}
 .rotate-arrow{transform:rotate(-90deg);}
 .content-container{overflow:hidden;max-height:5000px;opacity:1;transition:max-height .45s ease,opacity .3s ease;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
 
-/* 歷史列表項目 */
 .list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;}
 
-/* 方案與加值的小膠囊 */
 .pills {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     background: var(--pill-bg);
     color: var(--pill-text);
-    padding: 3px 8px;
+    padding: 3px 6px;
     border-radius: 6px;
     white-space: nowrap;
     line-height: 1; 
@@ -122,13 +114,37 @@ header h1 {
 .loading{text-align:center;padding:30px;font-size:0.8rem;color:var(--text-light);letter-spacing:2px;font-weight:700;}
 .footer{text-align:center;margin-top:32px;padding:12px;font-size:0.62rem;color:var(--text-light);opacity:0.4;letter-spacing:4px;}
 
-@media (max-width:480px){.container{border-radius:20px;padding:18px 12px;}.list-item{font-size:0.7rem;}.c-date{width:42px;}.c-name{width:50px;}.c-nat{width:36px;}.c-amt{width:70px;}}
+/* 📱 手機版 RWD 歷史列表分配優化 (防字體重疊) */
+@media (max-width:480px){
+    .container{border-radius:20px;padding:18px 12px;}
+    .list-item{font-size:0.7rem;}
+    .c-date{width:42px;}
+    .c-name{width:48px;}
+    .c-nat{width:36px;}
+    .c-plan{width:70px;}
+    .c-add{width:40px;}
+    .c-tip{width:35px;}
+    .c-amt{flex:1; font-size:0.7rem; padding-right:2px;}
+    .pills { font-size: 0.65rem; padding: 2px 4px; }
+}
+
+/* 🖥️ 電腦版 RWD 格式，完全保留不變 */
 @media (min-width:900px) {
-    body{padding:30px;}.container{max-width:760px;padding:30px 26px;border-radius:30px;}
+    body{padding:30px;}.container{max-width:850px;padding:30px 26px;border-radius:30px;}
     header h1{font-size:1.7rem;letter-spacing:14px;text-indent:14px;}
     .badge{font-size:0.75rem;padding:5px 16px;} 
     .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}
-    .flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}.c-date{width:70px;}.c-name{width:90px;}.c-nat{width:65px;}.c-amt{width:115px;font-size:0.95rem;}.footer{margin-top:40px;font-size:0.75rem;}
+    .flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}
+    
+    .c-date{width:80px;}
+    .c-name{width:90px;}
+    .c-nat{width:70px;}
+    .c-plan{width:150px;}
+    .c-add{width:100px;}
+    .c-tip{width:80px;}
+    .c-amt{flex:1; font-size:0.95rem; padding-right:10px;}
+    .footer{margin-top:40px;font-size:0.75rem;}
+    .pills { font-size: 0.8rem; padding: 4px 8px; }
 }
 </style>
 </head>
