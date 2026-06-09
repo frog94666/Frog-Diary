@@ -133,7 +133,7 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 
 .cancel-edit { text-align: center; font-size: 0.72rem; font-weight: 700; color: #e59a9a; margin-top: 4px; cursor: pointer; display: none; }
 
-/* 表格欄位對齊 (電腦版與標準版基礎) */
+/* 表格欄位對齊 (電腦與標準版基礎) */
 .table-wrapper{width:100%;}
 .flex-row{display:flex;align-items:center;width:100%;text-align:center;padding:12px 0;min-width:0;}
 .c-date{width:55px;flex-shrink:0;}
@@ -196,30 +196,35 @@ button:disabled{background:#ccc !important;cursor:not-allowed;box-shadow:none;}
 .logout-box { text-align: center; margin-top: 10px; }
 .btn-logout { background: none; border: none; color: var(--text-light); font-size: 0.65rem; text-decoration: underline; cursor: pointer; font-weight: bold; }
 
-/* 📱 手機版 RWD 微調 (精準防變形) */
+/* 📱 手機版 RWD 終極防變形微調 */
 @media (max-width:480px){
     .container{border-radius:20px;padding:18px 12px;}
     
-    /* 表單橫排空間不夠時自動安全換行，絕不擠壓 */
+    /* 表單輸入框防擠壓換行 */
     .form-box .form-row-flexible { flex-wrap: wrap; gap: 8px; }
     .form-box .form-row-flexible:nth-child(1) #f-date { flex: 1.3; min-width: 110px; }
     .form-box .form-row-flexible:nth-child(1) #f-name { flex: 1; min-width: 75px; }
     .form-box .form-row-flexible:nth-child(1) #f-nat { flex: 1; min-width: 75px; }
     
-    /* 歷史列表與標頭寬度重新調校 */
-    .list-item{font-size:0.7rem;}
-    .c-date{width:42px;}
-    .c-name{width:48px;}
-    .c-nat{width:36px;}
-    .c-plan{width:70px;}
-    .c-add{width:40px;}
-    .c-tip{width:35px;}
-    .c-amt{flex:1; font-size:0.7rem; padding-right:2px;}
-    .c-del{width:24px;}
-    .pills { font-size: 0.65rem; padding: 2px 4px; }
+    /* 歷史列表寬度重新完美分配 */
+    .list-item{font-size:0.68rem;}
+    .c-date{width:38px;}
+    .c-name{width:46px;}
+    .c-nat{width:32px;}
+    
+    /* 方案與加值放開固定寬度，改用彈性收縮，並縮小膠囊內襯 */
+    .c-plan{flex: 1.2; min-width: 0; width: auto;}
+    .c-add{flex: 0.9; min-width: 0; width: auto;}
+    .pills { font-size: 0.62rem; padding: 2px 3px; letter-spacing: -0.3px; }
+    
+    /* 小費、金額、垃圾桶完美定位，絕不重疊 */
+    .c-tip{width:32px;}
+    .c-amt{width:56px; flex-shrink: 0; flex: none; font-size:0.68rem; padding-right:2px;}
+    .c-del{width:22px; text-align: right;}
+    .btn-delete { font-size: 0.75rem; padding: 0; }
 }
 
-/* 🖥️ 原本的電腦版格式，原封不動完美保留並微調適配大尺寸 */
+/* 🖥️ 電腦版 RWD 格式，完全保留不變 */
 @media (min-width:900px) {
     body{padding:30px;}.container{max-width:850px;padding:30px 26px;border-radius:30px;}
     header h1{font-size:1.7rem;letter-spacing:14px;text-indent:14px;}
