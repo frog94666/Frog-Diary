@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>蛙仔盲盒日記 - 朋友共享版</title>
+<title>蛙仔盲盒日記 - 蛙仔朋友版</title>
 
 <style>
-:root{--bg-color:#f2f0eb;--card-bg:#ffffff;--accent:#7a6f66;--text-dark:#4a4a4a;--text-light:#9e9e9e;--line-color:#e8e6e1;--pill-bg:#ebe8e2;--pill-text:#8c837a;--addon-bg:#fdf2f2;--addon-text:#e59a9a;}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg-color:#f2f0eb;--card-bg:#ffffff;--accent:#7a6f66;--text-dark:#4a4a4a;--text-light:#9e9e9e;--line-color:#e8e6e1;--pill-bg:#ebe8e2;--pill-text:#8c837a;--addon-bg:#fdf2f2;--addon-text:#e59a9a;--btn-primary:#7a6f66;--btn-hover:#61564e;--delete-color:#e59a9a;--btn-update:#9c8c80;}
+*{box-shadow:none;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;}
 body {
     background: var(--bg-color);
@@ -49,7 +49,7 @@ header h1 {
     width: fit-content;
 }
 
-/* 數據儀表板 */
+/* 數據儀表板 (朋友版保持左右平分，簡潔好看) */
 .summary-box{background:#faf9f7;border-radius:16px;display:flex;margin-bottom:22px;border:1px solid var(--line-color);height:82px;overflow:hidden;}
 .summary-item{flex:1;border-right:1px solid var(--line-color);display:flex;flex-direction:column;justify-content:center;align-items:center;}
 .summary-item:last-child{border-right:none;}
@@ -61,22 +61,22 @@ header h1 {
     font-weight: 700;
 }
 
-/* 表格欄位對齊 (基準比例) */
+/* 歷史列表欄位對齊 (電腦與標準版基礎 - 拿掉垃圾桶寬度重新分配) */
 .table-wrapper{width:100%;}
 .flex-row{display:flex;align-items:center;width:100%;text-align:center;padding:12px 0;min-width:0;}
 .c-date{width:55px;flex-shrink:0;}
-.c-name{width:65px;flex-shrink:0;font-weight:700;text-align:center;}
-.c-nat{width:50px;flex-shrink:0;}
-.c-plan{width:100px;flex-shrink:0;}
-.c-add{width:65px;flex-shrink:0;}
-.c-tip{width:55px;flex-shrink:0;}
+.c-name{width:70px;flex-shrink:0;font-weight:700;text-align:center;}
+.c-nat{width:55px;flex-shrink:0;}
+.c-plan{width:105px;flex-shrink:0;}
+.c-add{width:70px;flex-shrink:0;}
+.c-tip{width:60px;flex-shrink:0;}
 .c-amt {
     flex: 1;
     text-align: right;
     font-weight: 700;
     color: var(--accent);
     font-size: 0.8rem;
-    padding-right: 4px;
+    padding-right: 6px; /* 讓金額精準貼齊右側邊緣 */
 }
 
 .list-header{border-bottom:1px solid var(--line-color);padding-bottom:10px;margin-bottom:6px;}
@@ -94,7 +94,8 @@ header h1 {
 .content-container{overflow:hidden;max-height:5000px;opacity:1;transition:max-height .45s ease,opacity .3s ease;}
 .content-container.collapsed{max-height:0 !important;opacity:0;}
 
-.list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;}
+/* 歷史列表項目 */
+.list-item{border-bottom:1px solid #f7f7f7;font-size:0.72rem;transition:background 0.2s;}
 
 .pills {
     display: inline-flex;
@@ -114,35 +115,44 @@ header h1 {
 .loading{text-align:center;padding:30px;font-size:0.8rem;color:var(--text-light);letter-spacing:2px;font-weight:700;}
 .footer{text-align:center;margin-top:32px;padding:12px;font-size:0.62rem;color:var(--text-light);opacity:0.4;letter-spacing:4px;}
 
-/* 📱 手機版 RWD 歷史列表分配優化 (防字體重疊) */
+/* 📱 手機版 RWD 完美對稱微調（對齊數據版間距，拿掉垃圾桶並均分空間） */
 @media (max-width:480px){
     .container{border-radius:20px;padding:18px 12px;}
-    .list-item{font-size:0.7rem;}
-    .c-date{width:42px;}
-    .c-name{width:48px;}
-    .c-nat{width:36px;}
-    .c-plan{width:70px;}
-    .c-add{width:40px;}
-    .c-tip{width:35px;}
-    .c-amt{flex:1; font-size:0.7rem; padding-right:2px;}
-    .pills { font-size: 0.65rem; padding: 2px 4px; }
+    
+    /* 歷史列表寬度重新分配，完美治好對不齊與過度空曠的問題 */
+    .list-item{font-size:0.68rem;}
+    .c-date{width:38px;}
+    .c-name{width:46px;}
+    .c-nat{width:32px;}
+    
+    /* 膠囊自適應，縮小內襯，避免擠壓 */
+    .c-plan{flex: 1.2; min-width: 0; width: auto;}
+    .c-add{flex: 0.9; min-width: 0; width: auto;}
+    .pills { font-size: 0.62rem; padding: 2px 3px; letter-spacing: -0.3px; }
+    
+    /* 小費與金額重新分配，與數據版寬度視覺體感一致 */
+    .c-tip{width:32px;}
+    .c-amt{flex: 1; text-align: right; font-size:0.68rem; padding-right: 4px;}
 }
 
-/* 🖥️ 電腦版 RWD 格式，完全保留不變 */
+/* 🖥️ 電腦版 RWD 格式 */
 @media (min-width:900px) {
     body{padding:30px;}.container{max-width:850px;padding:30px 26px;border-radius:30px;}
     header h1{font-size:1.7rem;letter-spacing:14px;text-indent:14px;}
     .badge{font-size:0.75rem;padding:5px 16px;} 
     .summary-box{height:95px;margin-bottom:28px;}.summary-item span{font-size:0.8rem;}.summary-item b{font-size:1.5rem;}
-    .flex-row{padding:18px 0;}.list-header span{font-size:0.82rem;}.list-item{font-size:0.95rem;}.year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}
+    .flex-row{padding:18px 0;}
+    .list-header span{font-size:0.82rem;}
+    .list-item{font-size:0.95rem;}
+    .year-header{padding:18px 20px;}.year-title{font-size:1.05rem;}
     
     .c-date{width:80px;}
-    .c-name{width:90px;}
-    .c-nat{width:70px;}
-    .c-plan{width:150px;}
-    .c-add{width:100px;}
-    .c-tip{width:80px;}
-    .c-amt{flex:1; font-size:0.95rem; padding-right:10px;}
+    .c-name{width:100px;}
+    .c-nat{width:80px;}
+    .c-plan{width:160px;}
+    .c-add{width:110px;}
+    .c-tip{width:90px;}
+    .c-amt{flex:1; font-size:0.95rem; padding-right:12px;}
     .footer{margin-top:40px;font-size:0.75rem;}
     .pills { font-size: 0.8rem; padding: 4px 8px; }
 }
@@ -176,8 +186,6 @@ header h1 {
 
 <script>
     const CONFIG = {
-        T_PRE: "ghp_", 
-        T_SUF: "2v5vgl44x445cys8djSgxp7kebIkiQ3ZmT0O", 
         GIST_ID: "ea604c159439173860a439882f615076"
     };
 
@@ -186,19 +194,19 @@ header h1 {
 
     async function loadData() {
         try {
-            const fullToken = CONFIG.T_PRE + CONFIG.T_SUF;
-            const res = await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`, {
-                headers: { "Authorization": `token ${fullToken}` }
-            });
+            // 朋友版使用公開的無需 Token 讀取
+            const res = await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`);
+            if (!res.ok) throw new Error();
+            
             const data = await res.json();
             db = JSON.parse(data.files["data.json"].content || "[]");
-
+            
             document.getElementById('loading-view').style.display = 'none';
             document.getElementById('main-view').style.display = 'block';
             
             render();
         } catch (e) {
-            document.getElementById('loading-view').innerText = "資料庫連線失敗，請檢查網路連線。";
+            document.getElementById('loading-view').innerText = "資料庫連線失敗，請稍後再試。";
         }
     }
 
